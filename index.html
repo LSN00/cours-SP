@@ -1775,6 +1775,25 @@ const THEME_DISPLAY_LABEL = {
   "Sols : métaux (mercure, nickel, plomb, zinc)": { plain:"la contamination des sols par les métaux (mercure, nickel, plomb, zinc)", de:"de la contamination des sols par les métaux (mercure, nickel, plomb, zinc)" },
   "Sols : HAP, lindane et chlordécone": { plain:"les HAP, le lindane et le chlordécone dans les sols", de:"des HAP, du lindane et du chlordécone dans les sols" },
   "Sols : radioactivité et conclusion": { plain:"la radioactivité des sols et la conclusion du cours", de:"de la radioactivité des sols et de la conclusion du cours" },
+  // --- Cours : Responsabilité sociale ---
+  "Introduction : enjeux et attitudes des étudiants": { plain:"les enjeux de l'introduction et les attitudes des étudiants en médecine", de:"des enjeux de l'introduction et des attitudes des étudiants en médecine" },
+  "Facteurs et enseignements efficaces": { plain:"les facteurs associés aux attitudes des étudiants et l'efficacité des enseignements", de:"des facteurs associés aux attitudes des étudiants et de l'efficacité des enseignements" },
+  "Histoire des inégalités sociales de santé": { plain:"l'histoire des inégalités sociales de santé", de:"de l'histoire des inégalités sociales de santé" },
+  "Charte d'Ottawa et promotion de la santé": { plain:"la Charte d'Ottawa et la promotion de la santé", de:"de la Charte d'Ottawa et de la promotion de la santé" },
+  "Inégalités sociales : constat et injustice": { plain:"le constat des inégalités sociales et leur caractère injuste", de:"du constat des inégalités sociales et de leur caractère injuste" },
+  "Pauvreté et précarité": { plain:"la pauvreté et la précarité", de:"de la pauvreté et de la précarité" },
+  "Espérance de vie et survie": { plain:"les inégalités d'espérance de vie et de survie", de:"des inégalités d'espérance de vie et de survie" },
+  "Trajectoire de vie et incorporation": { plain:"la trajectoire de vie et l'incorporation des inégalités", de:"de la trajectoire de vie et de l'incorporation des inégalités" },
+  "Schéma des déterminants et de la trajectoire de vie": { plain:"le schéma des déterminants de santé et de la trajectoire de vie", de:"du schéma des déterminants de santé et de la trajectoire de vie" },
+  "Déterminants sociaux de la santé": { plain:"les déterminants sociaux de la santé", de:"des déterminants sociaux de la santé" },
+  "Mécanismes des inégalités sociales de santé": { plain:"les mécanismes des inégalités sociales de santé", de:"des mécanismes des inégalités sociales de santé" },
+  "CHU et quatrième mission": { plain:"les CHU et leur quatrième mission", de:"des CHU et de leur quatrième mission" },
+  "Définition et principes de la responsabilité sociale": { plain:"la définition et les principes de la responsabilité sociale en santé", de:"de la définition et des principes de la responsabilité sociale en santé" },
+  "Étudiants responsables et enseignement RSS": { plain:"les étudiants socialement responsables et l'enseignement de la responsabilité sociale à Lyon Est", de:"des étudiants socialement responsables et de l'enseignement de la responsabilité sociale à Lyon Est" },
+  "Plaidoyer et questions du professionnel": { plain:"le plaidoyer et les questions du professionnel socialement responsable", de:"du plaidoyer et des questions du professionnel socialement responsable" },
+  "Humilité culturelle : pratiques": { plain:"les pratiques de l'humilité culturelle", de:"des pratiques de l'humilité culturelle" },
+  "Humilité culturelle : objectifs": { plain:"les objectifs de l'humilité culturelle", de:"des objectifs de l'humilité culturelle" },
+  "Responsabilité sociale : conclusion": { plain:"la conclusion du cours de responsabilité sociale", de:"de la conclusion du cours de responsabilité sociale" },
 };
 
 function displayLabelFor(theme, form){
@@ -1868,6 +1887,13 @@ function generateQuestions(n, pool){
         if (!srcFacts.includes(candidate)) srcFacts.push(candidate);
         wi++;
         if (wi > fullThemePool.length * 2) break; // safety valve
+      }
+      // garde-fou : jamais 5 énoncés vrais si le thème contient des énoncés faux
+      if (!srcFacts.some(f => !f.v)){
+        const spareFalse = shuffle(fullThemePool.filter(f => !f.v));
+        if (spareFalse.length && srcFacts.length){
+          srcFacts[srcFacts.length - 1] = spareFalse[0];
+        }
       }
       labelPlain = displayLabelFor(theme, 'plain');
       labelDe = displayLabelFor(theme, 'de');
@@ -2663,6 +2689,20 @@ const FACTS_PREVENTION = [
     e:"C'est l'exemple donné dans le tableau récapitulatif final du cours pour illustrer la promotion de la santé." },
   { theme:"Conclusion et vaccination obligatoire", v:false, t:"Selon le schéma récapitulatif du cours, la vaccination contre la méningite est un exemple d'éducation pour la santé plutôt que de prévention.",
     e:"Faux — dans le tableau récapitulatif du cours, la campagne de vaccination contre la méningite, portée par le service de santé étudiante, illustre la prévention." },
+
+  // ---- Énoncés faux complémentaires (générateur : au moins 1 faux par thème) ----
+  { theme:"Pourquoi faire de la prévention (MCV)", v:false, t:"Les maladies cardiovasculaires représentaient 5 % des décès en France en 2023.",
+    e:"Faux — elles représentaient 21 % des décès en France en 2023 (28 % dans le monde)." },
+  { theme:"Pourquoi faire de la prévention (MCV)", v:false, t:"Les 5 facteurs de risque modifiables des maladies cardiovasculaires sont responsables d'environ 10 % des MCV, ce qui limite l'intérêt de la prévention.",
+    e:"Faux — ils sont responsables de 57 % des MCV chez les femmes et de 53 % chez les hommes." },
+  { theme:"CeGIDD (dépistage IST)", v:false, t:"Les centres CeGIDD sont payants et exigent une identification complète des consultants.",
+    e:"Faux — ils sont gratuits, avec un accueil inconditionnel, et l'anonymat y est possible." },
+  { theme:"CeGIDD (dépistage IST)", v:false, t:"Le CeGIDD est né en 2016 de la fusion de la PMI et du centre de planification familiale.",
+    e:"Faux — il est né en 2016 de la fusion du CDAG et du Ciddist." },
+  { theme:"Service Sanitaire des Étudiants en Santé (SSES)", v:false, t:"Le Service Sanitaire des Étudiants en Santé a été mis en place en 2008 et ne concerne que la filière médecine.",
+    e:"Faux — il a été mis en place en 2018 et concerne toutes les filières de formation en santé." },
+  { theme:"Service Sanitaire des Étudiants en Santé (SSES)", v:false, t:"La réalisation de l'action de prévention dans le cadre du SSES à Lyon nécessite un minimum de 10 interventions.",
+    e:"Faux — c'est un minimum de 4 interventions." },
 ];
 const FIXED_QUESTIONS_PREVENTION = [
 {
@@ -3517,6 +3557,36 @@ const FACTS_RECHERCHE = [
     e:"C'est le lexique anglais donné en conclusion du cours." },
   { theme:"Vocabulaire anglais de la recherche", v:false, t:"En anglais, « Translational research » signifie recherche clinique.",
     e:"Faux — « Translational research » signifie recherche translationnelle. « Clinical research » signifie recherche clinique." },
+
+  // ---- Énoncés faux complémentaires (générateur : au moins 1 faux par thème) ----
+  { theme:"Evidence Based Medicine (EBM)", v:false, t:"L'EBM a d'abord été utilisée dans l'enseignement médical en France et est mise en pratique dans l'exercice médical depuis les années 1950.",
+    e:"Faux — d'abord au Canada, et mise en pratique depuis les années 1980." },
+  { theme:"Evidence Based Medicine (EBM)", v:false, t:"L'EBM ne tient pas compte des préférences du patient : la décision médicale repose uniquement sur les preuves scientifiques.",
+    e:"Faux — la décision résulte de l'intersection entre l'expérience clinique, la recherche clinique et les préférences du patient." },
+  { theme:"Critères de choix d'une hypothèse", v:false, t:"La faisabilité d'une hypothèse de recherche interroge si elle a déjà été explorée par d'autres équipes.",
+    e:"Faux — c'est l'originalité ; la faisabilité interroge si une méthode d'investigation est envisageable." },
+  { theme:"Critères de choix d'une hypothèse", v:false, t:"Les 5 critères de choix d'une hypothèse sont : pertinence, originalité, faisabilité, impact et rentabilité financière.",
+    e:"Faux — le 5e critère est la clarté (hypothèse précise et formulée de manière explicite)." },
+  { theme:"Incidence et prévalence", v:false, t:"Le taux d'incidence est le rapport entre le nombre total de cas existants à un instant donné et la population considérée.",
+    e:"Faux — c'est la définition de la prévalence ; l'incidence porte sur les nouveaux cas observés pendant une période donnée." },
+  { theme:"Incidence et prévalence", v:false, t:"La prévalence mesure uniquement le nombre de nouveaux cas apparus pendant une période donnée.",
+    e:"Faux — la prévalence correspond au nombre de cas de maladie existants à un instant donné ou sur une période donnée ; ce sont les nouveaux cas qui définissent l'incidence." },
+  { theme:"Préparation du projet (étape 1)", v:false, t:"Le protocole de recherche est rédigé par le seul promoteur de l'étude, sans l'investigateur principal ni statisticiens.",
+    e:"Faux — il est rédigé par l'investigateur principal, souvent avec un responsable scientifique, des statisticiens, des cliniciens et le promoteur." },
+  { theme:"Préparation du projet (étape 1)", v:false, t:"Un biais correspond à une erreur aléatoire, dispersée de manière non systématique.",
+    e:"Faux — un biais est une erreur qui va toujours dans la même direction, contrairement à l'erreur aléatoire." },
+  { theme:"Études analytiques (cohorte, cas-témoins)", v:false, t:"Dans une étude de cohorte, on compare l'exposition au facteur étudié entre deux groupes : les malades et les non malades.",
+    e:"Faux — c'est l'étude cas-témoins ; la cohorte compare l'incidence entre un groupe exposé et un groupe non exposé." },
+  { theme:"Études analytiques (cohorte, cas-témoins)", v:false, t:"Dans une étude cas-témoins, on suit au cours du temps un groupe d'individus initialement indemnes de la maladie.",
+    e:"Faux — c'est la définition de l'étude de cohorte ; l'étude cas-témoins compare l'exposition entre malades (cas) et non malades (témoins)." },
+  { theme:"Études expérimentales et randomisation", v:false, t:"Dans une étude expérimentale, on n'intervient pas sur la prise en charge des participants : on se contente d'observer.",
+    e:"Faux — on modifie la prise en charge pour évaluer l'efficacité et la tolérance d'une intervention." },
+  { theme:"Études expérimentales et randomisation", v:false, t:"La randomisation est un tirage au sort qui offre un moins bon niveau de preuve que les études non randomisées.",
+    e:"Faux — la randomisation offre le meilleur niveau de preuve car elle diminue le risque de biais." },
+  { theme:"Recommandations de bonne pratique (HAS)", v:false, t:"Le grade A de recommandation correspond à un faible niveau de preuve scientifique, associé aux niveaux de preuve 3 et 4.",
+    e:"Faux — le grade A correspond à une preuve scientifique établie (niveau de preuve 1) ; le grade C à un faible niveau de preuve (niveaux 3 et 4)." },
+  { theme:"Recommandations de bonne pratique (HAS)", v:false, t:"Le grade B de recommandation correspond à une preuve scientifique établie, associée au niveau de preuve 1.",
+    e:"Faux — le grade B correspond à une présomption scientifique (niveau de preuve 2) ; la preuve établie correspond au grade A." },
 ];
 const FIXED_QUESTIONS_RECHERCHE = [
 {
@@ -4757,6 +4827,817 @@ const CLOZE_PAGES_ENVIRONNEMENT = [
 },
 ];
 
+const FACTS_RESPONSABILITE = [
+  // ---- Introduction : enjeux et attitudes des étudiants ----
+  { theme:"Introduction : enjeux et attitudes des étudiants", v:true, t:"Le cours part de l'idée que la médecine d'aujourd'hui n'est pas celle d'hier ni de demain : il faut comprendre le monde qui nous entoure pour avoir une bonne pratique médicale.",
+    e:"Idée d'introduction du Pr Leaune, appuyée par des citations de Frantz Fanon et d'Édouard Glissant." },
+  { theme:"Introduction : enjeux et attitudes des étudiants", v:true, t:"Les enjeux climatiques (incendies, canicules) ont un impact direct sur la santé, sur les patients et sur l'organisation des soins.",
+    e:"Premier enjeu cité en introduction." },
+  { theme:"Introduction : enjeux et attitudes des étudiants", v:false, t:"Les services de santé sont suffisamment renforcés pour accueillir les personnes migrantes lors de la crise de l'accueil.",
+    e:"Faux — les services de santé ne sont pas suffisamment renforcés pour accueillir les personnes migrantes, ce qui a un impact très fort sur le système de santé." },
+  { theme:"Introduction : enjeux et attitudes des étudiants", v:true, t:"La crise démocratique (montée des extrêmes, remise en cause de la démocratie) concerne aussi l'hôpital et les universités, qui doivent être des lieux de démocratie où l'on peut délibérer.",
+    e:"Troisième enjeu cité en introduction." },
+  { theme:"Introduction : enjeux et attitudes des étudiants", v:true, t:"Hans Jonas est l'un des premiers à avoir parlé d'écologie et de principe de responsabilité.",
+    e:"Sa citation : « Agis de façon que les effets de ton action soient compatibles avec la permanence d'une vie authentiquement humaine sur terre. »" },
+  { theme:"Introduction : enjeux et attitudes des étudiants", v:true, t:"Dans l'étude présentée, plus on avance dans les études de médecine, moins on a d'attitudes favorables à l'égard des patients défavorisés.",
+    e:"On est donc moins socialement responsable au fil des années d'études." },
+  { theme:"Introduction : enjeux et attitudes des étudiants", v:false, t:"Dans l'étude présentée, plus on avance dans les études de médecine, plus les attitudes envers les patients défavorisés s'améliorent.",
+    e:"Faux — c'est l'inverse : elles diminuent." },
+  { theme:"Introduction : enjeux et attitudes des étudiants", v:true, t:"Le déclin des attitudes favorables est une réalité internationale, et l'empathie décline aussi beaucoup, tout comme l'intérêt pour la responsabilité sociale en santé.",
+    e:"D'où l'importance de faire des cours sur le sujet." },
+  { theme:"Introduction : enjeux et attitudes des étudiants", v:false, t:"Le déclin des attitudes favorables envers les patients défavorisés est une spécificité française, non retrouvée à l'étranger.",
+    e:"Faux — c'est une réalité internationale." },
+  { theme:"Introduction : enjeux et attitudes des étudiants", v:true, t:"Pour y répondre, il faut proposer aux étudiants des enseignements où ils rencontrent des populations précaires et vulnérables dans un cadre différent de l'habituel (association, lieu de détention, maraude).",
+    e:"C'est la solution proposée dans le cours." },
+  // ---- Facteurs et enseignements efficaces ----
+  { theme:"Facteurs et enseignements efficaces", v:true, t:"Le meilleur moyen de favoriser des attitudes positives des étudiants en médecine est de rencontrer des personnes vulnérables.",
+    e:"Les cours magistraux sont utiles, mais il faut basculer très rapidement sur la rencontre." },
+  { theme:"Facteurs et enseignements efficaces", v:true, t:"Dans le tableau des facteurs associés aux attitudes des étudiants, l'exposition aux populations défavorisées pendant les études de médecine est associée à des attitudes plus favorables (OR groupé de 1,47 ; p inférieur à 0,001).",
+    e:"C'est la ligne entourée du tableau." },
+  { theme:"Facteurs et enseignements efficaces", v:true, t:"Les cours magistraux sont importants, mais il faut basculer très rapidement vers la rencontre avec les personnes vulnérables.",
+    e:"Idée centrale de la partie sur l'enseignement." },
+  { theme:"Facteurs et enseignements efficaces", v:true, t:"Parmi les méthodes d'enseignement comparées, l'enseignement expérientiel dans la communauté est le plus efficace (+++).",
+    e:"C'est ce qui marche le mieux." },
+  { theme:"Facteurs et enseignements efficaces", v:true, t:"Le cursus d'enseignements dédié à la responsabilité sociale a une efficacité intermédiaire (++), supérieure à celle de l'enseignement traditionnel.",
+    e:"Tableau d'efficacité : traditionnel (-), sélection (+), cursus dédié (++), expérientiel (+++)." },
+  { theme:"Facteurs et enseignements efficaces", v:false, t:"Les stratégies de sélection des étudiants sont les plus efficaces pour favoriser les attitudes positives (+++).",
+    e:"Faux — elles ont une efficacité modeste (+) ; le plus efficace est l'enseignement expérientiel dans la communauté (+++)." },
+  { theme:"Facteurs et enseignements efficaces", v:true, t:"Le niveau socio-économique des patients influence fortement la communication entre soignants et patients en modifiant leurs attitudes.",
+    e:"Étude citée dans le cours." },
+  { theme:"Facteurs et enseignements efficaces", v:true, t:"Les patients à faible niveau socio-économique sont moins impliqués par le médecin dans les décisions thérapeutiques et osent moins poser de questions.",
+    e:"Leurs consultations sont aussi plus directives, avec moins de messages émotionnels." },
+  { theme:"Facteurs et enseignements efficaces", v:false, t:"Les patients à faible niveau socio-économique sont globalement plus satisfaits de leurs consultations.",
+    e:"Faux — ils sont globalement moins satisfaits, ce qui peut altérer la relation médecin-patient." },
+  { theme:"Facteurs et enseignements efficaces", v:true, t:"Les soins ont tendance à effacer les réalités sociales.",
+    e:"Phrase encadrée dans le cours." },
+  { theme:"Facteurs et enseignements efficaces", v:true, t:"Dans le tableau des facteurs associés, l'âge, la religiosité et la dette étudiante ne sont pas associés de façon significative aux attitudes envers les défavorisés.",
+    e:"Valeurs de p non significatives (0,34 ; 0,72 ; 0,55)." },
+  // ---- Histoire des inégalités sociales de santé ----
+  { theme:"Histoire des inégalités sociales de santé", v:true, t:"C'est en Europe, au milieu du XIXe siècle, que la question des inégalités sociales s'est posée.",
+    e:"Début de la partie « Histoire »." },
+  { theme:"Histoire des inégalités sociales de santé", v:true, t:"En 1842, Edwin Chadwick estime qu'en Angleterre les travailleurs auraient pu gagner 13 ans d'espérance de vie en améliorant l'hygiène publique et l'approvisionnement en eau potable.",
+    e:"Premier repère historique du cours." },
+  { theme:"Histoire des inégalités sociales de santé", v:false, t:"En 1842, Edwin Chadwick enquête sur une épidémie de typhus en Allemagne.",
+    e:"Faux — c'est Rudolf Virchow qui enquête, en 1848, sur une épidémie de typhus en Allemagne ; Chadwick travaille sur l'Angleterre." },
+  { theme:"Histoire des inégalités sociales de santé", v:true, t:"En 1848, Rudolf Virchow enquête sur une épidémie de typhus en Allemagne et met en avant les conditions sociales déplorables comme facteur important de la détérioration de la santé des populations.",
+    e:"Deuxième repère historique." },
+  { theme:"Histoire des inégalités sociales de santé", v:true, t:"Pour Virchow, les facteurs atmosphériques ou cosmiques ne produisent jamais l'épidémie à eux seuls : elle n'apparaît que là où les gens vivent dans des conditions sociales déplorables.",
+    e:"Citation de Virchow rapportée dans le cours." },
+  { theme:"Histoire des inégalités sociales de santé", v:true, t:"L'innovation ne suffit pas : des choses simples (accès à l'eau potable, toilettes, travail autour des naissances) peuvent avoir plus d'impact.",
+    e:"Message de la partie historique." },
+  { theme:"Histoire des inégalités sociales de santé", v:true, t:"Virchow prescrit comme traitement la démocratie, l'éducation, la liberté et la prospérité, ce qui constitue les prémices des déterminants sociaux de la santé.",
+    e:"Cela fait environ 200 ans qu'on a conscience de l'existence des déterminants sociaux de la santé." },
+  { theme:"Histoire des inégalités sociales de santé", v:true, t:"C'est dans la seconde moitié du XXe siècle que la prise en compte des inégalités sociales de santé devient réelle, grâce à la notion de Santé Publique.",
+    e:"Plus d'un siècle après Chadwick et Virchow." },
+  { theme:"Histoire des inégalités sociales de santé", v:false, t:"La prise en compte réelle des inégalités sociales de santé est contemporaine des travaux de Chadwick et Virchow, au XIXe siècle.",
+    e:"Faux — elle n'est réellement prise en compte que plus d'un siècle après, dans la seconde moitié du XXe siècle." },
+  // ---- Charte d'Ottawa et promotion de la santé ----
+  { theme:"Charte d'Ottawa et promotion de la santé", v:true, t:"En 1986, la Charte d'Ottawa, sous l'impulsion de l'OMS, met la question des déterminants sociaux de la santé au cœur de son modèle explicatif autour de la promotion de la santé.",
+    e:"Date et idée à retenir." },
+  { theme:"Charte d'Ottawa et promotion de la santé", v:false, t:"La Charte d'Ottawa a été mise en œuvre par l'OMS en 1978.",
+    e:"Faux — en 1986." },
+  { theme:"Charte d'Ottawa et promotion de la santé", v:true, t:"La promotion de la santé met en avant le fait que la santé n'est pas seulement thérapeutique : c'est aussi de la prévention.",
+    e:"Idée clé de la promotion de la santé." },
+  { theme:"Charte d'Ottawa et promotion de la santé", v:true, t:"Selon la Charte d'Ottawa, la promotion de la santé vise l'égalité en matière de santé, et ses interventions ont pour but de réduire les écarts actuels caractérisant l'état de santé.",
+    e:"Citation du cours." },
+  { theme:"Charte d'Ottawa et promotion de la santé", v:true, t:"Cette feuille de route mise en œuvre par l'OMS en 1986 est encore d'actualité aujourd'hui dans la lutte contre les inégalités sociales de santé au niveau mondial.",
+    e:"Le cours insiste sur son actualité." },
+  { theme:"Charte d'Ottawa et promotion de la santé", v:true, t:"Le schéma de la Charte d'Ottawa du cours comporte cinq axes : renforcer l'action communautaire, développer les aptitudes personnelles, créer des milieux favorables, réorienter les services de santé et établir une politique publique saine.",
+    e:"Axes visibles sur la figure du cours." },
+  { theme:"Charte d'Ottawa et promotion de la santé", v:true, t:"Le schéma de la Charte d'Ottawa associe trois stratégies : conférer les moyens, servir de médiateur et promouvoir l'idée.",
+    e:"Stratégies placées au centre de la figure." },
+  { theme:"Charte d'Ottawa et promotion de la santé", v:false, t:"L'un des axes du schéma de la Charte d'Ottawa consiste à privatiser les services de santé.",
+    e:"Faux — l'axe est de réorienter les services de santé." },
+  { theme:"Charte d'Ottawa et promotion de la santé", v:true, t:"L'exemple du VIH illustre que trouver tous les traitements possibles ne suffit pas si l'on ne s'attache pas aux déterminants sociaux de la santé.",
+    e:"Illustration donnée dans le cours (exemple à comprendre, pas à apprendre par cœur)." },
+  // ---- Inégalités sociales : constat et injustice ----
+  { theme:"Inégalités sociales : constat et injustice", v:true, t:"On observe une augmentation des inégalités sociales : les plus riches ont de plus en plus d'argent et l'écart entre riches et pauvres est de plus en plus marqué.",
+    e:"Constat de départ de la partie II." },
+  { theme:"Inégalités sociales : constat et injustice", v:true, t:"On observe une explosion des inégalités sociales depuis les années 80/90.",
+    e:"Repère temporel du cours." },
+  { theme:"Inégalités sociales : constat et injustice", v:true, t:"L'index de GINI compare le niveau de revenus des plus aisés à celui des moins aisés à l'intérieur d'un territoire donné.",
+    e:"Définition utilisée dans le cours." },
+  { theme:"Inégalités sociales : constat et injustice", v:true, t:"Même si l'état de santé global s'améliore, il s'améliore davantage chez les populations aisées.",
+    e:"Les inégalités de santé se creusent malgré le progrès global." },
+  { theme:"Inégalités sociales : constat et injustice", v:false, t:"Quand le niveau de richesse d'un pays augmente, les inégalités sociales de santé diminuent mécaniquement.",
+    e:"Faux — l'augmentation globale du niveau de richesse s'accompagne d'une augmentation d'inégalités sociales, notamment en santé." },
+  { theme:"Inégalités sociales : constat et injustice", v:true, t:"Les différences de santé ne s'expliquent pas uniquement par les conflits armés ou l'environnement au sens large : elles sont corrélées au niveau d'inégalités socio-économiques dans les pays et entre les pays.",
+    e:"Il y a un rapport complexe et, en quelque sorte, direct entre environnement social, inégalités sociales et état de santé." },
+  { theme:"Inégalités sociales : constat et injustice", v:true, t:"Les inégalités sociales de santé existent aussi entre différentes populations au sein d'un même pays, même dans les pays riches.",
+    e:"Elles ne concernent pas seulement la comparaison entre pays." },
+  { theme:"Inégalités sociales : constat et injustice", v:true, t:"Chaque maladie est associée à une inégalité sociale.",
+    e:"Phrase encadrée dans le cours." },
+  { theme:"Inégalités sociales : constat et injustice", v:true, t:"Il semble impossible de légitimer des inégalités sociales de santé, car cela va à l'encontre des principes de la médecine.",
+    e:"Argument de la partie « Pourquoi sont-elles injustes ? »." },
+  { theme:"Inégalités sociales : constat et injustice", v:true, t:"Les personnes de diverses couches sociales ne disposent pas d'une réelle égalité des chances pour atteindre leur niveau de santé optimal (Ridde et al., 2007).",
+    e:"Référence citée dans le cours." },
+  { theme:"Inégalités sociales : constat et injustice", v:true, t:"Les disparités de santé entre groupes sociaux sont la conséquence d'une distribution inégale et injuste des déterminants sociaux de la santé.",
+    e:"Lien entre déterminants et inégalités." },
+  { theme:"Inégalités sociales : constat et injustice", v:false, t:"Les inégalités sociales de santé sont les facteurs qui expliquent les déterminants sociaux de la santé.",
+    e:"Faux — inversion : les déterminants sociaux de la santé sont les facteurs qui expliquent les inégalités sociales de santé." },
+  { theme:"Inégalités sociales : constat et injustice", v:false, t:"Les inégalités sociales de santé n'existent qu'entre pays pauvres et pays riches, jamais à l'intérieur d'un même pays.",
+    e:"Faux — elles existent aussi entre populations d'un même pays, y compris dans les pays riches." },
+  // ---- Pauvreté et précarité ----
+  { theme:"Pauvreté et précarité", v:true, t:"La précarité et la pauvreté sont avant tout des facteurs de risque dramatiques de mortalité précoce.",
+    e:"Phrase encadrée dans le cours." },
+  { theme:"Pauvreté et précarité", v:true, t:"Les populations les plus précaires ont une espérance de vie significativement diminuée par rapport aux populations les plus riches.",
+    e:"Courbes de survie du cours." },
+  { theme:"Pauvreté et précarité", v:true, t:"La pauvreté est une donnée objective, mesurable, reflétant un niveau de ressources (remarque non dite en cours cette année).",
+    e:"Distinction pauvreté/précarité donnée en remarque dans le polycopié." },
+  { theme:"Pauvreté et précarité", v:true, t:"La précarité est une donnée subjective reflétant un niveau de vie (remarque non dite en cours cette année).",
+    e:"Distinction pauvreté/précarité donnée en remarque dans le polycopié." },
+  { theme:"Pauvreté et précarité", v:false, t:"La pauvreté est une donnée subjective, et la précarité une donnée objective et mesurable.",
+    e:"Faux — inversion : pauvreté = objective (ressources) ; précarité = subjective (niveau de vie)." },
+  { theme:"Pauvreté et précarité", v:true, t:"À niveau de ressources égal, deux personnes peuvent avoir des niveaux de vie différents selon les sécurités dont elles disposent (soutien social, sécurité financière, présence d'un logement).",
+    e:"Remarque non dite en cours cette année mais jugée intéressante." },
+  { theme:"Pauvreté et précarité", v:false, t:"La précarité ne dépend que du niveau de revenus de la personne.",
+    e:"Faux — elle dépend aussi des sécurités dont la personne dispose (soutien social, sécurité financière, logement)." },
+  // ---- Espérance de vie et survie ----
+  { theme:"Espérance de vie et survie", v:true, t:"Dans l'étude canadienne, on part d'une population de 100 personnes de 25 ans et on regarde, selon leur niveau socio-économique, le pourcentage encore vivant à 75 ans.",
+    e:"Dispositif de l'étude." },
+  { theme:"Espérance de vie et survie", v:true, t:"Le Canada possède un système de santé assez proche du système français, avec une protection sociale et une protection sanitaire.",
+    e:"Cela rend la comparaison pertinente." },
+  { theme:"Espérance de vie et survie", v:true, t:"Dans l'étude canadienne, 72 % des personnes à hauts revenus sont encore vivantes à 75 ans.",
+    e:"Valeur la plus haute." },
+  { theme:"Espérance de vie et survie", v:true, t:"Dans l'étude canadienne, 64 % de la population générale est encore vivante à 75 ans.",
+    e:"Valeur intermédiaire." },
+  { theme:"Espérance de vie et survie", v:true, t:"Dans l'étude canadienne, 50 % des personnes à bas revenus sont encore vivantes à 75 ans.",
+    e:"Valeur pour les bas revenus." },
+  { theme:"Espérance de vie et survie", v:true, t:"Dans l'étude canadienne, seuls 27 % des personnes sans-domicile fixe sont encore vivantes à 75 ans.",
+    e:"Valeur la plus basse." },
+  { theme:"Espérance de vie et survie", v:false, t:"Dans l'étude canadienne, 50 % des personnes sans-domicile fixe sont encore vivantes à 75 ans.",
+    e:"Faux — 27 % ; 50 % correspond aux personnes à bas revenus." },
+  { theme:"Espérance de vie et survie", v:true, t:"En France, les ouvriers ont une espérance de vie moyenne inférieure à celle des cadres.",
+    e:"Exemple de gradient social d'espérance de vie donné dans le cours." },
+  { theme:"Espérance de vie et survie", v:false, t:"Dans l'étude canadienne, c'est la population générale qui présente le pourcentage de survivants à 75 ans le plus élevé.",
+    e:"Faux — ce sont les personnes à hauts revenus (72 %)." },
+  // ---- Trajectoire de vie et incorporation ----
+  { theme:"Trajectoire de vie et incorporation", v:true, t:"Les inégalités sociales de santé traversent toute la trajectoire de vie des individus, dès la vie in utero.",
+    e:"Notion centrale du cours." },
+  { theme:"Trajectoire de vie et incorporation", v:true, t:"L'environnement global et le milieu de vie influencent le neurodéveloppement, le développement comportemental, affectif et social, de l'adolescence à la vieillesse.",
+    e:"Impact tout au long de la vie." },
+  { theme:"Trajectoire de vie et incorporation", v:true, t:"En psychiatrie, on parle d'expériences adverses dans l'enfance pour qualifier le vécu des premières années de vie.",
+    e:"Terme à connaître." },
+  { theme:"Trajectoire de vie et incorporation", v:true, t:"Les expériences adverses dans l'enfance permettent d'évaluer si l'enfance a été paisible ou marquée par des situations difficiles ou traumatisantes (violence, négligence, stress chronique).",
+    e:"Définition donnée dans le cours." },
+  { theme:"Trajectoire de vie et incorporation", v:true, t:"La notion d'incorporation de l'inégalité est centrale.",
+    e:"Les inégalités vécues durant la trajectoire de vie s'incorporent dans la santé." },
+  { theme:"Trajectoire de vie et incorporation", v:false, t:"Les inégalités sociales de santé n'apparaissent qu'à l'âge adulte, avec l'entrée dans la vie professionnelle.",
+    e:"Faux — elles traversent toute la trajectoire de vie, dès la vie in utero." },
+  { theme:"Trajectoire de vie et incorporation", v:true, t:"Dans le domaine de l'enfance aussi, il n'y a pas d'égalité : toutes les enfances ne se déroulent pas dans les mêmes conditions.",
+    e:"Constat du cours." },
+  // ---- Schéma des déterminants et de la trajectoire de vie ----
+  { theme:"Schéma des déterminants et de la trajectoire de vie", v:true, t:"Le schéma « Déterminants de santé et trajectoire de vie » est adapté de Dahlgren et Whitehead et doit être appris.",
+    e:"Le professeur l'a bien décrit." },
+  { theme:"Schéma des déterminants et de la trajectoire de vie", v:true, t:"Au centre du schéma figure l'individu : hérédité, comportement, sexe.",
+    e:"Premier niveau du schéma." },
+  { theme:"Schéma des déterminants et de la trajectoire de vie", v:true, t:"Les milieux de vie du schéma comprennent notamment le milieu familial, les réseaux sociaux, l'environnement physique, les amis, le quartier/habitat, les services de proximité et le milieu scolaire.",
+    e:"Deuxième niveau du schéma." },
+  { theme:"Schéma des déterminants et de la trajectoire de vie", v:true, t:"L'environnement global du schéma comprend notamment l'économie, les modèles socio-culturels, les valeurs et normes, l'organisation sociale et politique, le marché du travail, les services de santé, la politique de soutien, les médias, les lois et règlements.",
+    e:"Troisième niveau du schéma." },
+  { theme:"Schéma des déterminants et de la trajectoire de vie", v:true, t:"La trajectoire de vie du schéma passe par la vie in utero, la naissance, l'enfance, l'adolescence, la vie adulte et la vieillesse.",
+    e:"Étapes de la trajectoire de vie." },
+  { theme:"Schéma des déterminants et de la trajectoire de vie", v:false, t:"Dans le schéma, l'individu (hérédité, comportement, sexe) est placé à la périphérie, au niveau de l'environnement global.",
+    e:"Faux — l'individu est au centre, entouré des milieux de vie puis de l'environnement global." },
+  { theme:"Schéma des déterminants et de la trajectoire de vie", v:false, t:"La trajectoire de vie du schéma commence à la naissance.",
+    e:"Faux — elle commence à la vie in utero, puis la naissance." },
+  // ---- Déterminants sociaux de la santé ----
+  { theme:"Déterminants sociaux de la santé", v:true, t:"Les déterminants sociaux de la santé sont les circonstances dans lesquelles les individus naissent, grandissent, vivent, travaillent et vieillissent, ainsi que les systèmes mis en place pour faire face à la maladie.",
+    e:"Définition à connaître." },
+  { theme:"Déterminants sociaux de la santé", v:true, t:"Les niveaux de revenu et d'éducation, mais aussi la culture ou l'origine ethnique, sont des exemples de déterminants sociaux de la santé.",
+    e:"Exemples donnés dans le cours." },
+  { theme:"Déterminants sociaux de la santé", v:true, t:"Le racisme a un impact sur la santé : l'exposition répétée au racisme entraîne plus de risque d'hypertension artérielle, d'anxiété ou de dépression.",
+    e:"Exemple de déterminant social." },
+  { theme:"Déterminants sociaux de la santé", v:true, t:"Les circonstances qui constituent les déterminants sociaux de la santé reflètent des choix politiques et dépendent de la répartition du pouvoir, de l'argent et des ressources aux niveaux mondial, national et local.",
+    e:"Dimension politique des déterminants." },
+  { theme:"Déterminants sociaux de la santé", v:true, t:"La répartition inégale des déterminants sociaux de la santé est à la base des inégalités sociales de santé.",
+    e:"Lien déterminants → inégalités." },
+  { theme:"Déterminants sociaux de la santé", v:false, t:"Les déterminants sociaux de la santé ne dépendent pas de choix politiques : ils résultent uniquement de comportements individuels.",
+    e:"Faux — ils reflètent des choix politiques et la répartition du pouvoir, de l'argent et des ressources." },
+  { theme:"Déterminants sociaux de la santé", v:false, t:"La définition des déterminants sociaux de la santé exclut les systèmes mis en place pour faire face à la maladie.",
+    e:"Faux — elle les inclut." },
+  // ---- Mécanismes des inégalités sociales de santé ----
+  { theme:"Mécanismes des inégalités sociales de santé", v:true, t:"Les inégalités sociales sont la répartition inégale, selon les populations, des ressources sociales : revenu, logement, accès aux loisirs, etc.",
+    e:"Définition du cours." },
+  { theme:"Mécanismes des inégalités sociales de santé", v:true, t:"Les inégalités sociales influencent la santé par 4 mécanismes principaux.",
+    e:"Schéma très important selon le professeur." },
+  { theme:"Mécanismes des inégalités sociales de santé", v:true, t:"Premier mécanisme : les différences d'exposition aux déterminants sociaux de la santé, c'est-à-dire à des facteurs de risque (travail, logement) plus importants pour les populations précaires (manutention, horaires de travail, insalubrité du logement).",
+    e:"Mécanisme 1." },
+  { theme:"Mécanismes des inégalités sociales de santé", v:true, t:"Deuxième mécanisme : les différences de stratégies d'adaptation face au stress (soutien social, accès à des loisirs permettant de réduire ce stress).",
+    e:"Mécanisme 2." },
+  { theme:"Mécanismes des inégalités sociales de santé", v:true, t:"Troisième mécanisme : les différences d'accès aux soins selon le lieu d'habitation (déserts médicaux, quartiers défavorisés).",
+    e:"Mécanisme 3." },
+  { theme:"Mécanismes des inégalités sociales de santé", v:true, t:"Quatrième mécanisme : les différences de comportements de santé — les populations précaires adoptent moins de comportements de prévention (alimentation, sédentarité), souvent par manque de connaissance de leurs bienfaits.",
+    e:"Mécanisme 4." },
+  { theme:"Mécanismes des inégalités sociales de santé", v:false, t:"Parmi les 4 mécanismes principaux figure la différence de patrimoine génétique entre les classes sociales.",
+    e:"Faux — les 4 mécanismes sont : exposition aux déterminants, stratégies d'adaptation, accès aux soins, comportements de santé." },
+  { theme:"Mécanismes des inégalités sociales de santé", v:true, t:"Les mécanismes interagissent entre eux, et les inégalités sociales de santé influencent à leur tour les inégalités sociales : c'est un cercle vicieux qui tend à renforcer les différences au fil du temps.",
+    e:"D'où la volonté politique forte d'agir." },
+  { theme:"Mécanismes des inégalités sociales de santé", v:false, t:"Les inégalités sociales de santé n'ont aucun effet en retour sur les inégalités sociales.",
+    e:"Faux — elles les influencent, créant un cercle vicieux." },
+  { theme:"Mécanismes des inégalités sociales de santé", v:true, t:"Certaines zones urbaines sont de véritables déserts médicaux : par exemple, pour la psychiatrie libérale, Vaulx-en-Velin n'a aucun psychiatre alors que Lyon 6e en compte une cinquantaine.",
+    e:"Exemple d'inégalité d'accès aux soins ; la disparité s'observe aussi en dermatologie ou cardiologie." },
+  // ---- CHU et quatrième mission ----
+  { theme:"CHU et quatrième mission", v:true, t:"Les CHU ont été créés avec 3 missions : soins, enseignement, recherche.",
+    e:"Missions historiques." },
+  { theme:"CHU et quatrième mission", v:true, t:"Trois auteurs américains (Smitherman, Baker et Wilson) ont souligné une 4e mission des CHU : la responsabilité sociale.",
+    e:"Schéma de la quadruple mission des CHU." },
+  { theme:"CHU et quatrième mission", v:false, t:"La 4e mission des CHU, selon Smitherman, Baker et Wilson, est l'innovation technologique.",
+    e:"Faux — c'est la responsabilité sociale." },
+  { theme:"CHU et quatrième mission", v:true, t:"Selon Boelen & Heck (1995), les facultés de médecine socialement responsables ont l'obligation d'orienter la formation, les recherches et les services vers les principaux problèmes de santé de la communauté, région et/ou nation qu'elles ont comme mandat de servir.",
+    e:"Définition à retenir." },
+  { theme:"CHU et quatrième mission", v:true, t:"Dans « principaux problèmes de santé », il faut se demander quels sont les besoins de santé autour de soi, car on ne fait pas de la santé de la même manière à Lyon qu'ailleurs.",
+    e:"Les populations, niveaux socio-économiques et problèmes de santé diffèrent." },
+  { theme:"CHU et quatrième mission", v:true, t:"« Mandat de servir » signifie qu'à partir du moment où l'on est soignant on a des obligations (les médecins ne peuvent pas refuser quelqu'un en consultation) et qu'on doit dépasser l'éthique du colloque singulier.",
+    e:"Explication donnée dans le cours." },
+  { theme:"CHU et quatrième mission", v:false, t:"Le « mandat de servir » signifie qu'un médecin peut refuser un patient en consultation s'il estime que ce n'est pas un problème médical.",
+    e:"Faux — les médecins ne peuvent pas refuser quelqu'un en consultation." },
+  // ---- Définition et principes de la responsabilité sociale ----
+  { theme:"Définition et principes de la responsabilité sociale", v:true, t:"La définition de la responsabilité sociale en santé de 2021 impose une approche complexe et globale.",
+    e:"Définition la plus actuelle." },
+  { theme:"Définition et principes de la responsabilité sociale", v:true, t:"Selon la définition de 2021, la responsabilité sociale nécessite une mobilisation effective des différents partenaires dans la variété des domaines associés à la santé : médical, socioculturel, économique, écologique, politique, éthique et droits humains.",
+    e:"Extrait de la définition." },
+  { theme:"Définition et principes de la responsabilité sociale", v:true, t:"La responsabilité sociale en santé vise des actions transformatives susceptibles d'engager l'ensemble des professionnels de santé (pas que les médecins : aussi les infirmiers, aides-soignants…), individuellement et en groupes, dans une communauté de valeurs et en cogestion avec les parties prenantes.",
+    e:"Extrait de la définition." },
+  { theme:"Définition et principes de la responsabilité sociale", v:true, t:"L'objectif de la responsabilité sociale en santé est de co-construire des solutions avec l'ensemble des parties prenantes, et non de décider seul.",
+    e:"Engagement collectif et actions concrètes." },
+  { theme:"Définition et principes de la responsabilité sociale", v:true, t:"Les deux principes fondamentaux de la responsabilité sociale en santé (Boelen et al., 2008) sont l'altruisme et l'altérité.",
+    e:"À connaître." },
+  { theme:"Définition et principes de la responsabilité sociale", v:true, t:"L'altruisme correspond à l'intérêt prioritaire porté au bien-être de la société ; l'altérité correspond au souci d'intégration dans le contexte social.",
+    e:"Définitions des deux principes." },
+  { theme:"Définition et principes de la responsabilité sociale", v:false, t:"L'altérité désigne l'intérêt prioritaire porté au bien-être de la société, et l'altruisme le souci d'intégration dans le contexte social.",
+    e:"Faux — inversion : altruisme = bien-être de la société ; altérité = intégration dans le contexte social." },
+  { theme:"Définition et principes de la responsabilité sociale", v:true, t:"Dans un monde globalisé, ce qui se passe au niveau politique ailleurs sur la planète peut avoir un impact sur la santé (par exemple les élections américaines, ou une pandémie).",
+    e:"Exemples donnés dans le cours." },
+  { theme:"Définition et principes de la responsabilité sociale", v:false, t:"La responsabilité sociale en santé est l'affaire des seuls médecins.",
+    e:"Faux — elle engage l'ensemble des professionnels de santé (infirmiers, aides-soignants, etc.)." },
+  { theme:"Définition et principes de la responsabilité sociale", v:true, t:"Pour Virchow, la médecine est une science sociale et les médecins sont les avocats naturels des pauvres.",
+    e:"Citation du cours : la politique n'est rien d'autre que la médecine à une large échelle." },
+  { theme:"Définition et principes de la responsabilité sociale", v:true, t:"Depuis sa place, on ne peut pas tout faire pour révolutionner le système, mais on peut agir dans sa pratique quotidienne et l'organisation de ses services : outils et dispositifs favorisant l'accès au soin et la non-discrimination.",
+    e:"Idée générale de la partie « Responsabilité sociale en santé »." },
+  // ---- Étudiants responsables et enseignement RSS ----
+  { theme:"Étudiants responsables et enseignement RSS", v:true, t:"Un étudiant en médecine socialement responsable doit connaître les inégalités sociales de santé.",
+    e:"Premier attendu." },
+  { theme:"Étudiants responsables et enseignement RSS", v:true, t:"Un étudiant socialement responsable doit connaître et comprendre les dispositifs de soins dédiés aux populations précaires.",
+    e:"Deuxième attendu." },
+  { theme:"Étudiants responsables et enseignement RSS", v:true, t:"Un étudiant socialement responsable doit participer à des programmes favorisant les soins pour les populations précaires et présenter des attitudes favorables aux personnes les plus précaires.",
+    e:"Troisième et quatrième attendus." },
+  { theme:"Étudiants responsables et enseignement RSS", v:true, t:"À Lyon Est, l'UELC (Unité d'Enseignement Librement Choisie) « Responsabilité Sociale » sensibilise les étudiants dès la deuxième année de médecine.",
+    e:"Formation citée dans le cours." },
+  { theme:"Étudiants responsables et enseignement RSS", v:true, t:"L'enseignement « Responsabilité sociale en santé » dure un an, est expérientiel dans la communauté et bénéficie d'un soutien pédagogique par des étudiants-tuteurs.",
+    e:"Premier schéma de l'enseignement." },
+  { theme:"Étudiants responsables et enseignement RSS", v:true, t:"Cet enseignement est ouvert de la 2e à la 6e année et vise la sensibilisation aux inégalités sociales de santé, ainsi que le développement de l'empathie et du plaidoyer à l'égard des personnes les plus précaires.",
+    e:"Objectifs de l'enseignement." },
+  { theme:"Étudiants responsables et enseignement RSS", v:true, t:"L'enseignement comprend trois volets : enseignements interactifs sur les déterminants sociaux et la responsabilité sociale (20 heures), stage en association dédiée aux personnes les plus précaires (40 heures) et projets collaboratifs dédiés au plaidoyer (10 à 20 heures).",
+    e:"Second schéma de l'enseignement." },
+  { theme:"Étudiants responsables et enseignement RSS", v:false, t:"Dans cet enseignement, le stage en association dure 20 heures et les enseignements interactifs 40 heures.",
+    e:"Faux — inversion : enseignements interactifs 20 h ; stage 40 h." },
+  { theme:"Étudiants responsables et enseignement RSS", v:true, t:"Plus de 200 étudiants en santé ont participé à cet enseignement depuis 2020.",
+    e:"Chiffre cité sur le schéma." },
+  { theme:"Étudiants responsables et enseignement RSS", v:true, t:"Les projets collaboratifs ont été ajoutés car, si les stages sont utiles, la mise en forme de ce qui a été vu est aussi très importante.",
+    e:"Justification de ce volet." },
+  { theme:"Étudiants responsables et enseignement RSS", v:false, t:"L'enseignement « Responsabilité sociale en santé » repose uniquement sur des cours magistraux.",
+    e:"Faux — il est expérientiel dans la communauté (stage, projets collaboratifs)." },
+  // ---- Plaidoyer et questions du professionnel ----
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"On parle de plaidoyer car, comme le rappelait Virchow, les professionnels de santé doivent être les avocats des personnes les plus précaires.",
+    e:"Justification du terme." },
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"Les populations précaires n'ont souvent ni les moyens politiques ni l'accès aux instances décisionnelles pour faire entendre leurs besoins de santé.",
+    e:"D'où le rôle de porte-parole des professionnels." },
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"Chaque année, des étudiants réalisent des livres, vidéos, bandes dessinées ou recueils pour sensibiliser leurs pairs et même les soignants.",
+    e:"Productions du volet plaidoyer." },
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"Ces productions permettent de diffuser la parole, de mobiliser les consciences et de mettre en avant la créativité : seul on ne peut rien changer, collectivement on peut faire évoluer mentalités et pratiques.",
+    e:"Intérêt des projets collaboratifs." },
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"Le professionnel socialement responsable doit se demander quel est le projet de société qu'il incarne dans sa manière de travailler et si l'accès aux soins est assuré.",
+    e:"Premières questions de la liste." },
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"Le professionnel socialement responsable doit se demander s'il participe à la reproduction des inégalités ou, au contraire, à la résolution des injustices.",
+    e:"Question de la liste." },
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"Le professionnel socialement responsable doit s'interroger sur les impacts de ses actions, notamment sur le développement durable, et sur qui est affecté par leurs effets directs et indirects.",
+    e:"Questions de la liste." },
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"Le professionnel socialement responsable doit aussi se demander quels sont les intérêts en jeu, qui peut l'aider à agir de manière plus responsable, équitable et soutenable, et avec qui partager ses interrogations.",
+    e:"Dernières questions de la liste." },
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"L'affiche de Vie de Carabin selon laquelle, derrière la blouse, on n'a ni sexe ni religion ni préjugés n'est pas vraie et peut s'avérer dangereuse.",
+    e:"On fait de la médecine en fonction de qui on est." },
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"On ne peut pas totalement gommer qui l'on est : il faut se demander comment faire en sorte que « qui je suis » ait un impact le plus bénéfique possible sur les patients.",
+    e:"Message du cours sur l'identité du soignant." },
+  { theme:"Plaidoyer et questions du professionnel", v:false, t:"Porter une blouse blanche permet de gommer ses préjugés et de rester neutre face aux patients.",
+    e:"Faux — ce n'est pas parce qu'on porte une blouse blanche qu'on n'a pas de préjugés." },
+  { theme:"Plaidoyer et questions du professionnel", v:true, t:"Certaines personnes précaires ou dépressives, qui ne parlent à personne, parlent parfois en premier à leur médecin généraliste : sans attention aux enjeux de responsabilité sociale, on risque de passer à côté.",
+    e:"Remarque du cours." },
+  { theme:"Plaidoyer et questions du professionnel", v:false, t:"Selon le professeur, les problèmes sociaux ne relèvent pas du médecin mais uniquement de l'assistante sociale.",
+    e:"Faux — il juge qu'en réalité les problèmes sociaux relèvent en partie du médecin (Virchow : « avocats naturels des pauvres »)." },
+  // ---- Humilité culturelle : pratiques ----
+  { theme:"Humilité culturelle : pratiques", v:true, t:"Même en voulant bien faire, on peut avoir des attitudes que l'on ne maîtrise pas, qualifiées de micro-agressions.",
+    e:"Début de la partie sur l'humilité culturelle." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"Les micro-agressions ne sont pas ouvertement discriminantes mais peuvent être perçues négativement alors que le soignant n'avait pas forcément cette intention.",
+    e:"Exemple : « tu viens d'où ? »." },
+  { theme:"Humilité culturelle : pratiques", v:false, t:"Les micro-agressions sont des propos ouvertement discriminants et toujours intentionnels.",
+    e:"Faux — elles ne sont pas ouvertement discriminantes et le soignant n'a pas forcément cette intention." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"La métaphore des petites aiguilles : mises bout à bout, elles commencent à faire mal ; plus on vit de micro-agressions, plus elles ont un impact sur la santé mentale.",
+    e:"Image utilisée dans le cours." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"Une étude montre qu'aux États-Unis les personnes afro-américaines ont plus de stress, d'anxiété ou de dépression.",
+    e:"Illustration de l'effet des micro-agressions." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"Face à la réalité migratoire, les populations sont beaucoup plus diverses sur le plan culturel, ethnique et religieux, et le soignant doit être outillé pour accueillir les défis de santé que cela pose.",
+    e:"Contexte de l'humilité culturelle." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"L'humilité culturelle suppose une conscience de la diversité culturelle (ce qui nous relie et nous rassemble, et non ce qui nous différencie) et une conscience des déséquilibres de pouvoir, naturels entre médecin et patient, qu'il faut essayer de limiter.",
+    e:"Première pratique." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"L'humilité culturelle suppose une ouverture d'esprit à l'autre et à la différence, car face à l'inconnu l'être humain a plutôt tendance à rejeter.",
+    e:"Deuxième pratique." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"L'humilité culturelle suppose une conscience de soi : qui suis-je, quelle est mon histoire, comment impacte-t-elle ma manière de soigner ?",
+    e:"Troisième pratique." },
+  { theme:"Humilité culturelle : pratiques", v:false, t:"La conscience de soi consiste à effacer son histoire personnelle pour soigner de façon neutre.",
+    e:"Faux — il s'agit de se demander comment son histoire impacte sa manière de soigner et d'être en adéquation avec elle." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"Parmi les pratiques de l'humilité culturelle figurent l'altruisme (ne pas s'oublier mais penser aux autres), l'interaction soutenante et la réflectivité et critique.",
+    e:"Pratiques complémentaires." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"L'interaction soutenante signifie que l'on peut faire plus que ce que l'on pense être en devoir de faire : ce n'est pas parce que c'est un problème social qu'on ne peut rien faire.",
+    e:"Définition du cours." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"La réflectivité et la critique consistent à toujours chercher à s'améliorer, se remettre en question et accepter qu'on puisse être en difficulté.",
+    e:"Définition du cours." },
+  { theme:"Humilité culturelle : pratiques", v:true, t:"Des enjeux de genre (par exemple l'endométriose découverte très tard), d'origine ethnique, culturelle ou religieuse modifient l'accueil et le soin.",
+    e:"Enjeux cités avec la conscience des déséquilibres de pouvoir." },
+  // ---- Humilité culturelle : objectifs ----
+  { theme:"Humilité culturelle : objectifs", v:true, t:"Les objectifs de l'humilité culturelle sont : l'empowerment, le respect mutuel, le partenariat, les soins optimaux et le développement professionnel continu.",
+    e:"Liste des 5 objectifs." },
+  { theme:"Humilité culturelle : objectifs", v:true, t:"L'empowerment consiste à redonner le pouvoir d'agir aux personnes concernées : on ne fait pas à leur place, on les accompagne.",
+    e:"Définition du cours." },
+  { theme:"Humilité culturelle : objectifs", v:false, t:"L'empowerment consiste à décider à la place des personnes concernées pour mieux les protéger.",
+    e:"Faux — on ne fait pas à leur place, on les accompagne." },
+  { theme:"Humilité culturelle : objectifs", v:true, t:"Le partenariat consiste à trouver des solutions ensemble.",
+    e:"Objectif de l'humilité culturelle." },
+  { theme:"Humilité culturelle : objectifs", v:true, t:"Les soins optimaux signifient qu'il n'y a pas de médecine ni de soins de santé à deux vitesses.",
+    e:"Objectif de l'humilité culturelle." },
+  { theme:"Humilité culturelle : objectifs", v:true, t:"L'humilité culturelle vise à éviter les préjugés, l'oppression, l'intolérance, la stigmatisation, la discrimination, l'exclusion, les stéréotypes, la méfiance, le jugement et la mésentente.",
+    e:"Liste de ce qu'on ne veut surtout pas." },
+  { theme:"Humilité culturelle : objectifs", v:false, t:"Parmi les objectifs de l'humilité culturelle figure le recours à des soins différents pour chaque catégorie de population (médecine à deux vitesses).",
+    e:"Faux — l'objectif est des soins optimaux, sans médecine à deux vitesses." },
+  // ---- Responsabilité sociale : conclusion ----
+  { theme:"Responsabilité sociale : conclusion", v:true, t:"Les inégalités sociales de santé touchent à la fois la santé physique et mentale : c'est l'ensemble des dimensions de la santé qui est touché.",
+    e:"Conclusion du cours." },
+  { theme:"Responsabilité sociale : conclusion", v:true, t:"Les inégalités sociales de santé existent entre les pays, entre populations différentes au sein d'un même pays et entre populations de différents niveaux socio-économiques.",
+    e:"Conclusion du cours." },
+  { theme:"Responsabilité sociale : conclusion", v:true, t:"Les inégalités sociales de santé reposent sur des mécanismes complexes (comportements de santé, accès aux soins, facteurs de risque, déterminants sociaux de la santé…) qui impactent les individus tout au long de leur vie : la notion de trajectoire de vie est centrale.",
+    e:"Conclusion du cours." },
+  { theme:"Responsabilité sociale : conclusion", v:true, t:"Les inégalités sociales impactent également la relation soignant-soigné.",
+    e:"Conclusion du cours." },
+  { theme:"Responsabilité sociale : conclusion", v:true, t:"Il faut former les étudiants en santé aux inégalités sociales de santé, car le manque de connaissance sur ces inégalités altère la relation tant du côté des soignants que des soignés.",
+    e:"Conclusion du cours." },
+  { theme:"Responsabilité sociale : conclusion", v:false, t:"Les inégalités sociales de santé ne touchent que la santé physique.",
+    e:"Faux — elles touchent la santé physique et mentale." },
+  { theme:"Responsabilité sociale : conclusion", v:false, t:"Les inégalités sociales n'ont pas d'impact sur la relation soignant-soigné, qui reste neutre.",
+    e:"Faux — le manque de connaissance sur ces inégalités altère la relation des deux côtés." },
+];
+
+const FIXED_QUESTIONS_RESPONSABILITE = [
+{
+  q: "Concernant l'introduction du cours et l'évolution des attitudes des étudiants en médecine,",
+  options: [
+    { t:"Plus on avance dans les études de médecine, moins on a d'attitudes favorables à l'égard des patients défavorisés.", v:true, e:"Exact — donc moins on est socialement responsable." },
+    { t:"L'empathie décline aussi au fil des études, tout comme l'intérêt pour la responsabilité sociale en santé.", v:true, e:"Exact." },
+    { t:"Ce déclin est une spécificité française, non retrouvée à l'étranger.", v:false, e:"Faux — c'est une réalité internationale, d'où l'importance de faire des cours dessus." },
+    { t:"Pour y répondre, on propose aux étudiants de rencontrer des populations précaires dans un cadre différent de l'habituel (association, lieu de détention, maraude).", v:true, e:"Exact." },
+    { t:"Les attitudes favorables diminuent en début d'études puis remontent nettement en fin de cursus.", v:false, e:"Faux — le déclin se poursuit : plus on avance, moins les attitudes sont favorables." },
+  ]
+},
+{
+  q: "Concernant les enjeux évoqués en introduction,",
+  options: [
+    { t:"Les enjeux climatiques (incendies, canicules) ont un impact direct sur la santé et sur l'organisation des soins.", v:true, e:"Exact." },
+    { t:"Les services de santé sont suffisamment renforcés pour accueillir les personnes migrantes.", v:false, e:"Faux — ils ne sont pas suffisamment renforcés, ce qui a un impact très fort sur le système de santé." },
+    { t:"L'hôpital et les universités doivent être des lieux de démocratie, où l'on peut délibérer.", v:true, e:"Exact (crise démocratique : montée des extrêmes, remise en cause de la démocratie)." },
+    { t:"Hans Jonas est l'un des premiers à avoir parlé d'écologie et de principe de responsabilité.", v:true, e:"Exact." },
+    { t:"Frantz Fanon est présenté comme l'un des premiers auteurs à avoir parlé d'écologie.", v:false, e:"Faux — Fanon est cité pour sa phrase sur la mission de chaque génération ; l'écologie et le principe de responsabilité renvoient à Hans Jonas." },
+  ]
+},
+{
+  q: "Concernant les enseignements qui favorisent des attitudes positives envers les personnes vulnérables,",
+  options: [
+    { t:"L'enseignement expérientiel dans la communauté est le plus efficace (+++).", v:true, e:"Exact." },
+    { t:"Le cursus d'enseignements dédié à la responsabilité sociale a une efficacité intermédiaire (++).", v:true, e:"Exact." },
+    { t:"L'enseignement traditionnel est aussi efficace que l'enseignement expérientiel.", v:false, e:"Faux — il est le moins efficace du tableau (-)." },
+    { t:"Les stratégies de sélection des étudiants ont une efficacité modeste (+).", v:true, e:"Exact." },
+    { t:"Les cours magistraux suffisent : il n'est pas nécessaire de basculer vers la rencontre avec les personnes vulnérables.", v:false, e:"Faux — les cours magistraux sont importants, mais il faut basculer très rapidement sur la rencontre." },
+  ]
+},
+{
+  q: "Concernant l'influence du niveau socio-économique du patient sur la relation de soin,",
+  options: [
+    { t:"Les patients à faible niveau socio-économique sont moins impliqués par le médecin dans les décisions thérapeutiques.", v:true, e:"Exact." },
+    { t:"Ils osent moins poser de questions.", v:true, e:"Exact." },
+    { t:"Leurs consultations sont plus directives, avec davantage de messages émotionnels.", v:false, e:"Faux — consultations plus directives avec MOINS de messages émotionnels." },
+    { t:"Ils sont globalement moins satisfaits, ce qui peut altérer la relation médecin-patient.", v:true, e:"Exact." },
+    { t:"Le cours propose de résoudre cela par davantage de cours magistraux.", v:false, e:"Faux — par des enseignements expérientiels dans la communauté." },
+  ]
+},
+{
+  q: "Concernant l'histoire des inégalités sociales de santé,",
+  options: [
+    { t:"En 1842, Edwin Chadwick estime que les travailleurs anglais auraient pu gagner 13 ans d'espérance de vie en améliorant l'hygiène publique et l'approvisionnement en eau potable.", v:true, e:"Exact." },
+    { t:"En 1848, Rudolf Virchow enquête sur une épidémie de typhus en Allemagne.", v:true, e:"Exact." },
+    { t:"Pour Virchow, les facteurs atmosphériques ou cosmiques suffisent à produire l'épidémie.", v:false, e:"Faux — ils ne la produisent jamais à eux seuls : seulement là où les gens vivent dans des conditions sociales déplorables." },
+    { t:"Virchow prescrit comme traitement la démocratie, l'éducation, la liberté et la prospérité.", v:true, e:"Exact — prémices des déterminants sociaux de la santé." },
+    { t:"La prise en compte réelle des inégalités sociales de santé est contemporaine des travaux de Chadwick et Virchow.", v:false, e:"Faux — elle n'intervient que plus d'un siècle après, dans la seconde moitié du XXe siècle, grâce à la notion de Santé Publique." },
+  ]
+},
+{
+  q: "Concernant la Charte d'Ottawa,",
+  options: [
+    { t:"Elle date de 1986 et a été mise en œuvre sous l'impulsion de l'OMS.", v:true, e:"Exact." },
+    { t:"Elle met la question des déterminants sociaux de la santé au cœur de son modèle explicatif autour de la promotion de la santé.", v:true, e:"Exact." },
+    { t:"Selon elle, la promotion de la santé vise l'égalité en matière de santé en réduisant les écarts caractérisant l'état de santé.", v:true, e:"Exact." },
+    { t:"Elle limite la promotion de la santé à l'offre de soins thérapeutiques.", v:false, e:"Faux — la santé n'est pas seulement thérapeutique : c'est aussi de la prévention." },
+    { t:"Cette feuille de route n'est plus d'actualité dans la lutte contre les inégalités sociales de santé.", v:false, e:"Faux — elle est encore d'actualité aujourd'hui et importante au niveau mondial." },
+  ]
+},
+{
+  q: "Concernant le schéma de la Charte d'Ottawa présenté dans le cours,",
+  options: [
+    { t:"Il comporte l'axe « renforcer l'action communautaire ».", v:true, e:"Exact." },
+    { t:"Il comporte l'axe « développer les aptitudes personnelles ».", v:true, e:"Exact." },
+    { t:"Il comporte l'axe « réorienter les services de santé ».", v:true, e:"Exact." },
+    { t:"Il comporte l'axe « privatiser les services de santé ».", v:false, e:"Faux — l'axe est de réorienter les services de santé ; les autres axes sont créer des milieux favorables et établir une politique publique saine." },
+    { t:"Ses trois stratégies sont : conférer les moyens, sanctionner et servir de médiateur.", v:false, e:"Faux — conférer les moyens, servir de médiateur et promouvoir l'idée." },
+  ]
+},
+{
+  q: "Concernant l'index de GINI et l'évolution des inégalités sociales,",
+  options: [
+    { t:"L'index de GINI compare le niveau de revenus des plus aisés et des moins aisés à l'intérieur d'un territoire donné.", v:true, e:"Exact." },
+    { t:"On observe une explosion des inégalités sociales depuis les années 80/90.", v:true, e:"Exact." },
+    { t:"Même si l'état de santé global s'améliore, il s'améliore davantage chez les populations aisées.", v:true, e:"Exact." },
+    { t:"L'augmentation du niveau de richesse des pays s'est accompagnée d'une diminution des inégalités sociales de santé.", v:false, e:"Faux — elle s'est accompagnée d'une augmentation des inégalités sociales, notamment en santé." },
+    { t:"Les différences de santé s'expliquent uniquement par les conflits armés et l'environnement au sens large.", v:false, e:"Faux — elles sont aussi corrélées au niveau d'inégalités socio-économiques dans les pays et entre les pays." },
+  ]
+},
+{
+  q: "Concernant le caractère injuste des inégalités sociales de santé,",
+  options: [
+    { t:"Il semble impossible de les légitimer, car cela va à l'encontre des principes de la médecine.", v:true, e:"Exact." },
+    { t:"Les personnes de diverses couches sociales ne disposent pas d'une réelle égalité des chances pour atteindre leur niveau de santé optimal (Ridde et al., 2007).", v:true, e:"Exact." },
+    { t:"Les disparités de santé sont la conséquence d'une distribution inégale et injuste des déterminants sociaux de la santé.", v:true, e:"Exact." },
+    { t:"Les inégalités sociales de santé sont les facteurs qui expliquent les déterminants sociaux de la santé.", v:false, e:"Faux — inversion : ce sont les déterminants sociaux qui expliquent les inégalités sociales de santé." },
+    { t:"Les inégalités sociales de santé n'existent qu'entre pays, pas au sein d'un même pays riche.", v:false, e:"Faux — elles existent aussi entre populations d'un même pays, y compris riche." },
+  ]
+},
+{
+  q: "Concernant l'étude canadienne sur la survie à 75 ans selon le niveau socio-économique,",
+  options: [
+    { t:"On part d'une population de 100 personnes de 25 ans et on compare le pourcentage encore vivant à 75 ans selon le niveau socio-économique.", v:true, e:"Exact." },
+    { t:"72 % des personnes à hauts revenus sont encore vivantes à 75 ans.", v:true, e:"Exact." },
+    { t:"64 % de la population générale et 50 % des personnes à bas revenus sont encore vivantes à 75 ans.", v:true, e:"Exact." },
+    { t:"50 % des personnes sans-domicile fixe sont encore vivantes à 75 ans.", v:false, e:"Faux — 27 % ; les 50 % correspondent aux personnes à bas revenus." },
+    { t:"Le Canada a un système de santé très différent du nôtre, ce qui limite toute comparaison.", v:false, e:"Faux — il a un système de santé assez proche (protection sociale, protection sanitaire)." },
+  ]
+},
+{
+  q: "Concernant la trajectoire de vie et l'incorporation des inégalités,",
+  options: [
+    { t:"Les inégalités sociales de santé traversent toute la trajectoire de vie, dès la vie in utero.", v:true, e:"Exact." },
+    { t:"En psychiatrie, on parle d'expériences adverses dans l'enfance pour qualifier le vécu des premières années de vie.", v:true, e:"Exact." },
+    { t:"Ces expériences peuvent inclure violence, négligence ou stress chronique.", v:true, e:"Exact." },
+    { t:"La notion d'incorporation de l'inégalité est une notion secondaire du cours.", v:false, e:"Faux — elle est centrale." },
+    { t:"Les enfances sont toutes vécues dans des conditions comparables : il n'y a pas d'inégalité à ce stade de la vie.", v:false, e:"Faux — « dans ce domaine aussi, il n'y a pas d'égalité »." },
+  ]
+},
+{
+  q: "Concernant le schéma « Déterminants de santé et trajectoire de vie » (d'après Dahlgren et Whitehead),",
+  options: [
+    { t:"L'individu (hérédité, comportement, sexe) est au centre du schéma.", v:true, e:"Exact." },
+    { t:"Les milieux de vie entourent l'individu (milieu familial, amis, quartier, milieu scolaire…).", v:true, e:"Exact." },
+    { t:"L'environnement global comprend notamment l'économie, les valeurs et normes, le marché du travail, les médias, les lois et règlements.", v:true, e:"Exact." },
+    { t:"La trajectoire de vie du schéma commence à la naissance.", v:false, e:"Faux — elle commence à la vie in utero." },
+    { t:"L'individu est placé à la périphérie du schéma, dans l'environnement global.", v:false, e:"Faux — il est au centre, entouré des milieux de vie puis de l'environnement global." },
+  ]
+},
+{
+  q: "Concernant les déterminants sociaux de la santé (DSS),",
+  options: [
+    { t:"Ce sont les circonstances dans lesquelles les individus naissent, grandissent, vivent, travaillent et vieillissent, ainsi que les systèmes mis en place pour faire face à la maladie.", v:true, e:"Exact." },
+    { t:"Ils incluent les niveaux de revenu et d'éducation, mais aussi la culture ou l'origine ethnique.", v:true, e:"Exact." },
+    { t:"L'exposition répétée au racisme augmente le risque d'hypertension artérielle, d'anxiété ou de dépression.", v:true, e:"Exact." },
+    { t:"Ils sont indépendants de tout choix politique.", v:false, e:"Faux — ils reflètent des choix politiques et dépendent de la répartition du pouvoir, de l'argent et des ressources." },
+    { t:"Leur répartition inégale est une conséquence, et non une cause, des inégalités sociales de santé.", v:false, e:"Faux — elle est à la base des inégalités sociales de santé." },
+  ]
+},
+{
+  q: "Parmi les 4 mécanismes principaux par lesquels les inégalités sociales influencent la santé, on retrouve :",
+  options: [
+    { t:"Les différences d'exposition aux déterminants sociaux de la santé (facteurs de risque liés au travail, au logement).", v:true, e:"Exact." },
+    { t:"Les différences de stratégies d'adaptation face au stress (soutien social, accès aux loisirs).", v:true, e:"Exact." },
+    { t:"Les différences d'accès aux soins selon le lieu d'habitation (déserts médicaux, quartiers défavorisés).", v:true, e:"Exact." },
+    { t:"Les différences de comportements de santé : moins de comportements de prévention chez les populations précaires, souvent par manque de connaissance de leurs bienfaits.", v:true, e:"Exact." },
+    { t:"Les différences de patrimoine génétique entre les classes sociales.", v:false, e:"Faux — ce n'est pas l'un des 4 mécanismes du cours." },
+  ]
+},
+{
+  q: "Concernant la dynamique des inégalités sociales et des inégalités sociales de santé,",
+  options: [
+    { t:"Les inégalités sociales sont la répartition inégale, selon les populations, des ressources sociales (revenu, logement, accès aux loisirs).", v:true, e:"Exact." },
+    { t:"Les mécanismes interagissent entre eux dans la survenue des inégalités sociales de santé.", v:true, e:"Exact." },
+    { t:"Les inégalités sociales de santé influencent à leur tour les inégalités sociales, ce qui crée un cercle vicieux.", v:true, e:"Exact — d'où la volonté politique forte d'agir." },
+    { t:"Ce cercle vicieux tend à réduire les différences au fil du temps.", v:false, e:"Faux — il tend à les renforcer." },
+    { t:"Les mécanismes agissent de façon isolée, sans interaction entre eux.", v:false, e:"Faux — ils interagissent entre eux." },
+  ]
+},
+{
+  q: "Concernant les CHU et la responsabilité sociale,",
+  options: [
+    { t:"Les CHU ont été créés avec 3 missions : soins, enseignement, recherche.", v:true, e:"Exact." },
+    { t:"La 4e mission soulignée par Smitherman, Baker et Wilson est l'innovation technologique.", v:false, e:"Faux — c'est la responsabilité sociale." },
+    { t:"Selon Boelen & Heck (1995), les facultés socialement responsables orientent formation, recherches et services vers les principaux problèmes de santé de la communauté, région et/ou nation qu'elles ont comme mandat de servir.", v:true, e:"Exact." },
+    { t:"Le « mandat de servir » signifie qu'un médecin peut refuser un patient en consultation si le problème est social.", v:false, e:"Faux — les médecins ne peuvent pas refuser quelqu'un en consultation : on doit dépasser l'éthique du colloque singulier." },
+    { t:"Le professionnel socialement responsable se demande s'il participe à la reproduction des inégalités ou à la résolution des injustices.", v:true, e:"Exact — fait partie de la liste de questions du cours." },
+  ]
+},
+{
+  q: "Concernant la définition de la responsabilité sociale en santé (2021) et ses principes,",
+  options: [
+    { t:"Elle impose une approche complexe et globale.", v:true, e:"Exact." },
+    { t:"Elle nécessite la mobilisation de différents partenaires (médical, socioculturel, économique, écologique, politique, éthique, droits humains).", v:true, e:"Exact." },
+    { t:"Elle vise des actions transformatives pouvant engager l'ensemble des professionnels de santé, pas seulement les médecins.", v:true, e:"Exact." },
+    { t:"Elle repose sur une cogestion avec les parties prenantes : l'objectif est de co-construire des solutions plutôt que de décider seul.", v:true, e:"Exact." },
+    { t:"Ses deux principes fondamentaux (Boelen et al., 2008) sont la solidarité et l'équité.", v:false, e:"Faux — ce sont l'altruisme et l'altérité." },
+  ]
+},
+{
+  q: "Concernant l'enseignement « Responsabilité sociale en santé » à Lyon Est et le plaidoyer,",
+  options: [
+    { t:"Il est expérientiel dans la communauté, avec un soutien pédagogique par des étudiants-tuteurs.", v:true, e:"Exact." },
+    { t:"On parle de plaidoyer car, comme le rappelait Virchow, les professionnels de santé doivent être les avocats des personnes les plus précaires.", v:true, e:"Exact." },
+    { t:"Il comprend un stage de 20 heures en association et 40 heures d'enseignements interactifs.", v:false, e:"Faux — inversion : 20 h d'enseignements interactifs et 40 h de stage." },
+    { t:"Plus de 200 étudiants en santé y ont participé depuis 2010.", v:false, e:"Faux — depuis 2020." },
+    { t:"Chaque année, des étudiants réalisent des livres, vidéos, bandes dessinées ou recueils pour sensibiliser leurs pairs et les soignants.", v:true, e:"Exact." },
+  ]
+},
+{
+  q: "Concernant l'humilité culturelle,",
+  options: [
+    { t:"Les micro-agressions ne sont pas ouvertement discriminantes mais peuvent être perçues négativement alors que le soignant n'avait pas forcément cette intention.", v:true, e:"Exact." },
+    { t:"Il faut une conscience de soi : qui suis-je, quelle est mon histoire, comment impacte-t-elle ma manière de soigner ?", v:true, e:"Exact." },
+    { t:"Selon l'affiche de Vie de Carabin reprise dans le cours, derrière la blouse blanche on n'a pas de préjugés, ce qui est vrai.", v:false, e:"Faux — l'affiche n'est pas vraie et peut s'avérer dangereuse : ce n'est pas parce qu'on porte une blouse blanche qu'on n'a pas de préjugés." },
+    { t:"Il faut avoir conscience des déséquilibres de pouvoir, naturels entre médecin et patient, et essayer de les limiter.", v:true, e:"Exact." },
+    { t:"L'empowerment consiste à décider à la place des personnes concernées pour mieux les protéger.", v:false, e:"Faux — on ne fait pas à leur place, on les accompagne." },
+  ]
+},
+{
+  q: "Concernant les objectifs de l'humilité culturelle et la conclusion du cours,",
+  options: [
+    { t:"L'empowerment : redonner le pouvoir d'agir aux personnes concernées, sans faire à leur place.", v:true, e:"Exact." },
+    { t:"Les soins optimaux : pas de médecine ni de soins de santé à deux vitesses.", v:true, e:"Exact." },
+    { t:"Le partenariat : trouver des solutions ensemble.", v:true, e:"Exact." },
+    { t:"Les inégalités sociales de santé touchent uniquement la santé physique.", v:false, e:"Faux — elles touchent la santé physique et mentale." },
+    { t:"Le manque de connaissance sur les inégalités sociales de santé n'altère pas la relation soignant-soigné.", v:false, e:"Faux — il altère la relation tant du côté des soignants que des soignés." },
+  ]
+},
+];
+
+const CLOZE_PAGES_RESPONSABILITE = [
+{
+  title: "Page 1 — Introduction : enjeux et attitudes des étudiants",
+  sections: [
+    { h: "Introduction — pourquoi la responsabilité sociale ?", paras: [
+      "Le Pr {{3|Leaune}} commence son cours avec une citation de {{3|Frantz Fanon}} : « Chaque génération doit dans une relative opacité découvrir sa {{2|mission}}, la {{2|remplir}} ou la {{2|trahir}}. » ainsi qu'une d'{{3|Édouard Glissant}} : « Agis dans ton {{1|lieu}}, pense avec le {{1|monde}}. »",
+      "La médecine d'aujourd'hui n'est pas celle d'{{2|hier}} ou de {{2|demain}} : il faut {{1|comprendre le monde}} qui nous entoure pour avoir une bonne pratique médicale. Cette santé est prise dans un {{1|monde global}} : il faut s'interroger et comprendre ce qui nous entoure pour ne pas passer à côté de questions de santé.",
+      "{{1|Enjeux climatiques}} (incendies, {{2|canicules}}) : impact {{1|direct}} sur la santé, sur les {{2|patients}} et sur l'{{1|organisation des soins}} (plus de {{3|huit mille}} morts en France).",
+      "{{1|Crise migratoire}} (ou crise de l'{{1|accueil}}) : nous ne sommes plus en capacité d'accueillir décemment des populations qui arrivent dans notre pays, ce qui a un impact très fort sur le système de santé : les services de santé ne sont pas suffisamment {{2|renforcés}} pour accueillir les {{2|personnes migrantes}}.",
+      "{{1|Crise démocratique}} : montée des {{2|extrêmes}}, remise en cause de la {{2|démocratie}}. L'{{1|hôpital}} et les {{1|universités}} doivent être des lieux de démocratie : on doit pouvoir {{1|délibérer}}. Face à ces enjeux, des solutions doivent être cherchées afin de préserver notre {{2|système de soins}} et surtout notre {{1|humanité}} en santé.",
+      "{{3|Hans Jonas}}, un des premiers à parler d'{{1|écologie}} et de principe de {{1|responsabilité}} : « Agis de façon que les effets de ton action soient compatibles avec la {{1|permanence}} d'une vie authentiquement {{1|humaine}} sur terre. » La préservation de la vie fait partie évidente du soin, mais cela doit s'inscrire dans un {{2|modèle global}}.",
+    ]},
+    { h: "Attitudes des étudiants envers les plus précaires", paras: [
+      "Une étude faite avec le {{2|doyen}} et des {{2|Américains}} montre comment évoluent les {{1|attitudes}} des étudiants en médecine à l'égard des plus {{1|précaires}}. Malheureusement, plus on {{1|avance}} dans les études de médecine, {{1|moins}} on a d'attitudes {{1|favorables}} à l'égard des patients {{1|défavorisés}}, donc moins on est {{1|socialement responsable}}.",
+      "Figure : les scores d'attitude envers les personnes vulnérables {{1|baissent}} globalement au fil des années d'études (de la {{3|1re}} année à la {{3|4e}}-{{3|5e}} année).",
+      "C'est une réalité {{1|internationale}}, d'où l'importance de faire des cours dessus. L'{{1|empathie}} décline aussi beaucoup, tout comme l'{{1|intérêt}} pour la responsabilité sociale en santé.",
+      "Que faire ? Il faut proposer aux étudiants des enseignements dans lesquels ils {{1|rencontrent}} des populations {{1|précaires}} et {{1|vulnérables}} dans un {{1|cadre différent}} d'habitude : {{2|association}}, lieu de {{2|détention}}, {{2|maraude}}.",
+    ]},
+  ]
+},
+{
+  title: "Page 2 — Facteurs associés et enseignements efficaces",
+  sections: [
+    { h: "Facteurs associés aux attitudes des étudiants (tableau)", paras: [
+      "Tableau « Factors associated with medical students attitudes toward the underserved » : l'{{1|exposition aux défavorisés}} pendant les études de médecine est associée à des attitudes plus favorables (OR groupé {{3|1,47}} ; p inférieur à {{3|0,001}}), de même que le sexe {{2|féminin}} (OR {{3|1,47}}), l'origine de {{2|communautés défavorisées}} (OR {{3|2,20}}), les {{2|minorités ethniques}} (OR {{3|2,06}}) et l'{{2|intention d'exercer en soins primaires}} (OR {{3|1,97}}).",
+      "En revanche, l'{{2|âge}} (p = {{3|0,34}}), la {{2|religiosité}} (p = {{3|0,72}}) et la {{2|dette étudiante}} (p = {{3|0,55}}) ne sont pas associés de façon significative à ces attitudes.",
+    ]},
+    { h: "Comment favoriser les attitudes positives ?", paras: [
+      "Le meilleur moyen de favoriser des attitudes positives des étudiants en médecine est de {{1|rencontrer}} des personnes {{1|vulnérables}}. Les {{2|cours magistraux}}, c'est bien et important, mais il faut basculer très rapidement sur la {{1|rencontre}} avec ces personnes.",
+      "Encadré : les {{1|soins}} ont tendance à {{1|effacer}} les réalités {{1|sociales}}. Quand on rencontre les personnes en {{2|blouse blanche}}, on ne se rend pas forcément compte de cette diversité et de cette réalité sociale.",
+      "Il faut donc renforcer ces attitudes positives par d'autres types d'enseignements, notamment des {{1|cursus d'enseignements dédiés}} à la responsabilité sociale. Ce qui marche le mieux est d'aller à la rencontre des personnes vulnérables : c'est l'{{1|enseignement expérientiel dans la communauté}}.",
+    ]},
+    { h: "Efficacité des différentes méthodes d'enseignement (tableau)", paras: [
+      "{{1|Enseignement traditionnel}} (n = {{3|3}}) : efficacité {{3|-}}. {{1|Stratégies de sélection}} (n = {{3|2}}) : efficacité {{3|+}}. {{1|Cursus dédié}} à la responsabilité (n = {{3|13}}) : efficacité {{3|++}}. {{1|Enseignement expérientiel dans la communauté}} (n = {{3|3}}) : efficacité {{3|+++}}.",
+    ]},
+    { h: "Niveau socio-économique et relation de soin", paras: [
+      "Le {{1|niveau socio-économique}} des patients influence fortement la {{1|communication}} entre soignants et patients en modifiant leurs {{2|attitudes}}.",
+      "Les patients à {{1|faible niveau socio-économique}} sont {{1|moins impliqués}} par le médecin dans les {{2|décisions thérapeutiques}}, osent {{1|moins poser de questions}} et ont des consultations plus {{1|directives}}, avec {{2|moins de messages émotionnels}}. Ils sont globalement {{1|moins satisfaits}}, ce qui peut altérer la relation {{2|médecin-patient}}. On résout cela, encore une fois, par des enseignements {{1|expérientiels dans la communauté}}.",
+    ]},
+  ]
+},
+{
+  title: "Page 3 — I. Histoire et Charte d'Ottawa",
+  sections: [
+    { h: "I. Histoire", paras: [
+      "C'est en {{2|Europe}}, au milieu du {{3|XIXe}} siècle, que la question des {{1|inégalités sociales}} s'est posée.",
+      "En {{3|1842}}, {{3|Edwin Chadwick}} estime qu'en {{2|Angleterre}} les {{2|travailleurs}} auraient pu gagner {{3|13}} ans d'{{1|espérance de vie}} en améliorant l'{{1|hygiène publique}} et l'approvisionnement en {{1|eau potable}}.",
+      "En {{3|1848}}, {{3|Rudolf Virchow}} enquête sur une épidémie de {{2|typhus}} en {{2|Allemagne}} et met en avant la question des conditions {{1|sociales déplorables}} comme facteur important dans la détérioration de la santé des populations.",
+      "Virchow : « On peut accuser les facteurs {{2|atmosphériques}} ou {{2|cosmiques}}, mais jamais ceux-ci ne produisent l'épidémie à {{2|eux seuls}}. Ils ne la produisent que là où les gens vivent dans des conditions {{1|sociales déplorables}}. »",
+      "L'{{1|innovation}} ne suffit pas : il faut des choses {{1|simples}} qui peuvent avoir plus d'impact, comme l'accès à l'{{2|eau potable}} ou à des {{2|toilettes}}, ou le travail autour des {{2|naissances}}.",
+      "Cela fait donc {{3|200}} ans qu'on a conscience qu'il existe des {{1|déterminants sociaux de la santé}}. Virchow prescrit comme traitement la {{2|démocratie}}, l'{{2|éducation}}, la {{2|liberté}} et la {{2|prospérité}} : ce sont les {{1|prémices}} de ce que l'on appellera plus tard les déterminants sociaux de la santé.",
+      "C'est finalement plus d'un siècle après, dans la {{3|seconde moitié}} du {{3|XXe}} siècle, que la prise en compte des {{1|inégalités sociales de santé}} et la compréhension des {{1|déterminants sociaux de la santé}} est réellement prise en compte grâce à la notion de {{1|Santé Publique}}.",
+    ]},
+    { h: "La Charte d'Ottawa (1986)", paras: [
+      "En {{3|1986}}, la {{1|Charte d'Ottawa}}, sous l'impulsion de l'{{1|Organisation Mondiale de la Santé}} ({{1|OMS}}), met la question des {{1|déterminants sociaux de la santé}} au cœur de son modèle explicatif autour de la {{1|promotion de la santé}}.",
+      "La promotion de la santé met en avant le fait que la santé n'est pas seulement {{1|thérapeutique}} : c'est aussi de la {{1|prévention}}.",
+      "Schéma de la Charte d'Ottawa — cinq axes : {{1|renforcer l'action communautaire}}, {{1|développer les aptitudes personnelles}}, {{1|créer des milieux favorables}}, {{1|réorienter les services de santé}}, {{1|établir une politique publique saine}}.",
+      "Schéma de la Charte d'Ottawa — trois stratégies : {{1|conférer les moyens}}, {{1|servir de médiateur}}, {{1|promouvoir l'idée}}.",
+      "Exemple du {{2|VIH}} : on peut trouver tous les {{2|traitements}} possibles pour lutter contre le VIH, mais si on ne s'attache pas aux {{1|déterminants sociaux}}, cela ne marchera pas.",
+      "Charte d'Ottawa : « la promotion de la santé vise l'{{1|égalité}} en matière de santé. Ses interventions ont pour but de {{1|réduire les écarts}} actuels caractérisant l'état de santé ». Cette {{2|feuille de route}} mise en œuvre par l'OMS en {{3|1986}} est encore d'{{2|actualité}} aujourd'hui et importante dans la lutte contre les inégalités sociales de santé au niveau {{2|mondial}}.",
+    ]},
+  ]
+},
+{
+  title: "Page 4 — II. Inégalités sociales de santé : constat et injustice",
+  sections: [
+    { h: "II. Inégalités sociales de santé", paras: [
+      "On observe une {{1|augmentation des inégalités sociales}} : les plus riches ont de plus en plus d'argent et l'écart entre {{2|riches}} et {{2|pauvres}} est de plus en plus marqué. On observe une {{1|explosion}} de ces inégalités depuis les années {{3|80/90}}.",
+      "On regarde notamment l'{{1|index de GINI}} : le niveau de {{1|revenus}} des plus aisés versus les moins aisés à l'intérieur d'un {{2|territoire donné}}. Cela montre qu'il y a une augmentation globale du niveau de {{1|richesse}} de ces pays, accompagnée d'une augmentation d'{{1|inégalités sociales}}, notamment en {{1|santé}}.",
+      "Même si l'état de santé global {{1|s'améliore}}, il s'améliore {{1|davantage}} chez les populations {{1|aisées}}.",
+      "Ces inégalités se remarquent particulièrement au niveau de la {{1|différence de salaires}} entre les populations les plus riches et les plus pauvres. Ce {{2|gradient}} augmente au fil des années partout dans le monde.",
+      "Ces différences ne s'expliquent pas uniquement par les {{2|conflits armés}} dans le monde ou l'{{2|environnement}} au sens large, mais sont {{1|corrélées}} au niveau d'{{1|inégalités socio-économiques}} dans les pays et {{1|entre les pays}}. Il y a un rapport complexe et, en quelque sorte, {{2|direct}} entre l'environnement {{2|social}}, les inégalités sociales et l'état de santé des populations.",
+      "Ces inégalités sociales de santé existent aussi {{1|entre différentes populations au sein d'un même pays}}, même dans les {{2|pays riches}}, pour des populations qui ont des différences en termes d'inégalités socio-économiques.",
+      "Encadré : {{1|chaque maladie}} est associée à une {{1|inégalité sociale}} !",
+    ]},
+    { h: "A. Pourquoi sont-elles injustes ?", paras: [
+      "On pourrait discuter du fait que les inégalités sociales pourraient être {{2|justes}} : légitimer que certaines personnes aient des revenus supérieurs aux autres et dans quelles mesures.",
+      "Il semble {{1|impossible}} de légitimer des inégalités sociales de santé : pourquoi certaines personnes auraient plus de légitimité à être dans un meilleur état de santé que d'autres ? Cela va à l'{{1|encontre des principes de la médecine}}.",
+      "Les personnes de diverses couches sociales ne disposent pas d'une réelle {{1|égalité des chances}} pour atteindre leur niveau de santé {{2|optimal}} ({{3|Ridde et al., 2007}}).",
+      "Les {{1|disparités}} observées dans l'état de santé entre les groupes sociaux sont la conséquence d'une {{1|distribution inégale et injuste}} des déterminants sociaux de la santé. Les {{1|déterminants sociaux de la santé}} sont les facteurs qui {{1|expliquent}} les inégalités sociales de santé.",
+    ]},
+  ]
+},
+{
+  title: "Page 5 — Précarité, pauvreté et espérance de vie",
+  sections: [
+    { h: "Survie, précarité et pauvreté", paras: [
+      "Figure : probabilité de {{1|survie}} en fonction des inégalités socio-économiques, chez les hommes et chez les femmes, selon le {{2|cinquième de revenus}} le plus riche, la cohorte totale, le cinquième le plus pauvre et les personnes en {{2|hébergement collectif}} (refuges, pensions, hôtels) : plus le niveau socio-économique est bas, plus la survie {{1|diminue}}.",
+      "Encadré : la {{1|précarité}} et la {{1|pauvreté}} sont avant tout des facteurs de risque {{1|dramatiques}} de {{1|mortalité précoce}}. Les populations les plus précaires ont une espérance de vie {{1|significativement diminuée}} par rapport aux populations les plus riches.",
+      "Remarque (non dite cette année, mais intéressante) : la {{1|pauvreté}} est une donnée {{1|objective}}, {{1|mesurable}}, reflétant un niveau de {{1|ressources}} qu'a une personne. La {{1|précarité}} est une donnée {{1|subjective}} reflétant un niveau de {{1|vie}}.",
+      "À niveau de ressources égal, deux personnes peuvent avoir des niveaux de vie différents en fonction des {{1|sécurités}} dont elles disposent : soutien {{2|social}}, sécurité {{2|financière}}, présence d'un {{2|logement}}.",
+    ]},
+    { h: "B. Exemples d'inégalités sociales de santé — 1. Inégalités sociales d'espérance de vie", paras: [
+      "En France, les {{2|ouvriers}} ont une espérance de vie moyenne inférieure de {{3|8}} années à celle des {{2|cadres}} (exemple du cours).",
+      "Étude canadienne : on part d'une population de {{3|100}} personnes de {{3|25}} ans et on regarde, en fonction de leur niveau {{1|socio-économique}} à ce moment-là, le pourcentage de personnes encore vivantes à {{3|75}} ans. Le {{2|Canada}} possède un système de santé assez proche du nôtre, avec une protection {{2|sociale}} et une protection {{2|sanitaire}}.",
+      "{{3|72}} % des personnes à {{1|hauts revenus}} ; {{3|64}} % de la {{1|population générale}} ; {{3|50}} % des personnes à {{1|bas revenus}} ; {{3|27}} % des personnes {{1|sans-domicile fixe}}.",
+    ]},
+  ]
+},
+{
+  title: "Page 6 — Trajectoire de vie, schéma et déterminants sociaux",
+  sections: [
+    { h: "Trajectoire de vie et incorporation", paras: [
+      "Pour comprendre la notion d'inégalités sociales de santé, il faut savoir qu'elle traverse toute la {{1|trajectoire de vie}} des individus, déjà lors de la vie {{2|in utero}}.",
+      "L'environnement {{1|global}} et le {{1|milieu de vie}} des personnes vont impacter leur {{2|neurodéveloppement}}, leur développement {{2|comportemental}}, {{2|affectif}}, {{2|social}}, aussi bien durant l'{{2|adolescence}}, l'âge {{2|adulte}} ou la {{2|vieillesse}}.",
+      "En psychiatrie, on parle d'{{1|expériences adverses dans l'enfance}} pour qualifier le vécu des premières années de vie. Cela permet d'évaluer si l'enfance a été {{2|paisible}} et sans événements marquants ou, au contraire, marquée par des situations difficiles ou traumatisantes ({{2|violence}}, {{2|négligence}}, {{2|stress chronique}}). Malheureusement, dans ce domaine aussi, il n'y a pas d'{{1|égalité}}.",
+      "Cette notion d'{{1|incorporation de l'inégalité}} est centrale.",
+    ]},
+    { h: "Schéma : déterminants de santé et trajectoire de vie", paras: [
+      "Schéma « Déterminants de santé et trajectoire de vie » (d'après {{3|Dahlgren et Whitehead}}, modifié) : le professeur l'a bien décrit, il est à {{1|apprendre}}.",
+      "Au {{1|centre}} : l'{{1|individu}} ({{2|hérédité}}, {{2|comportement}}, {{2|sexe}}). Autour, les {{1|milieux de vie}} : milieu {{2|familial}}, réseaux {{2|sociaux}}, {{2|environnement physique}}, {{2|amis}}, {{2|quartier}}/habitat, services de {{2|proximité}}, milieu {{2|scolaire}}.",
+      "À l'extérieur, l'{{1|environnement global}} : {{2|économie}}, modèles {{2|socio-culturels}}, {{2|valeurs}} et normes, organisation {{2|sociale et politique}}, marché du {{2|travail}}, services de {{2|santé}}, politique de {{2|soutien}}, {{2|médias}}, {{2|lois et règlements}}.",
+      "La trajectoire de vie passe par : vie {{2|in utero}}, {{2|naissance}}, {{2|enfance}}, {{2|adolescence}}, vie {{2|adulte}}, {{2|vieillesse}}.",
+    ]},
+    { h: "Les déterminants sociaux de la santé", paras: [
+      "Les {{1|déterminants sociaux de la santé}} sont les {{1|circonstances}} dans lesquelles les individus {{2|naissent}}, {{2|grandissent}}, {{2|vivent}}, {{2|travaillent}} et {{2|vieillissent}}, ainsi que les {{1|systèmes mis en place pour faire face à la maladie}}.",
+      "Exemples : les niveaux de {{2|revenu}}, l'{{2|éducation}}… mais aussi la {{2|culture}} ou l'{{2|origine ethnique}}. Il existe du {{1|racisme}} qui a un impact sur la santé : l'exposition {{1|répétée}} au racisme entraîne plus de risque d'{{2|hypertension artérielle}}, d'{{2|anxiété}} ou de {{2|dépression}}.",
+      "Ces circonstances reflètent des choix {{1|politiques}} : elles dépendent de la répartition du {{2|pouvoir}}, de l'{{2|argent}} et des {{2|ressources}} à tous les niveaux : {{2|mondial}}, {{2|national}}, {{2|local}}.",
+      "La répartition {{1|inégale}} des déterminants sociaux de la santé est à la {{1|base}} des inégalités sociales de santé.",
+    ]},
+  ]
+},
+{
+  title: "Page 7 — C. Mécanismes des inégalités sociales de santé",
+  sections: [
+    { h: "C. Mécanisme des inégalités sociales de santé", paras: [
+      "Le graphique est {{1|important}} pour comprendre quels sont les {{1|mécanismes}} en jeu qui font que les inégalités {{1|sociales}} deviennent des inégalités sociales de {{1|santé}}. Le professeur a insisté : cette diapo est importante pour l'{{2|examen}} mais aussi pour la {{2|vie}}.",
+      "Organigramme : {{1|inégalités sociales}} → {{1|différences d'exposition aux déterminants sociaux de la santé}}, {{1|différences de stratégies d'adaptation}}, {{1|différences d'accès aux soins}} → {{1|différences dans les comportements de santé}} → {{1|inégalités sociales de santé}}, avec une {{2|boucle de rétroaction}} des inégalités sociales de santé vers les inégalités sociales.",
+      "Les inégalités sociales sont la {{1|répartition inégale}}, en fonction des populations, des {{1|ressources sociales}} en termes de {{2|revenu}}, {{2|logement}}, accès aux {{2|loisirs}}, etc. Elles influent par {{3|4}} mécanismes principaux.",
+    ]},
+    { h: "Les 4 mécanismes principaux", paras: [
+      "{{1|Différences d'exposition aux déterminants sociaux de la santé}} : les populations ont différents degrés d'exposition à des {{1|facteurs de risques}} ({{2|travail}}, {{2|logement}}, etc.). Ces facteurs de risques sont plus importants pour les populations {{1|précaires}} ({{2|manutention}}, {{2|horaires de travail}}, {{2|insalubrité}} du logement, etc.).",
+      "{{1|Différences de stratégies d'adaptation}} : face à un {{1|stress}}, il existe différentes stratégies d'adaptation, par exemple le {{1|soutien social}} que l'on peut recevoir ou la faculté d'avoir accès à des {{1|loisirs}} qui permettent de réduire ce stress (« partez en week-end, ça vous fera du bien » : tout le monde ne peut pas se le permettre).",
+      "{{1|Différences d'accès aux soins}} : en fonction du lieu d'{{2|habitation}}, la possibilité d'accès aux soins ({{2|médecins}}, {{2|hôpitaux}}) est différente, comme dans les {{1|déserts médicaux}} et les {{2|quartiers défavorisés}}.",
+      "Exemple de désert médical : à {{3|Vaulx-en-Velin}}, on ne compte {{3|aucun}} psychiatre exerçant en libéral, alors qu'à {{3|Lyon 6e}}, on en dénombre près d'une {{3|cinquantaine}} ; cette disparité s'observe aussi dans d'autres spécialités ({{2|dermatologie}}, {{2|cardiologie}}).",
+      "{{1|Différences dans les comportements de santé}} : les populations les plus précaires adoptent {{1|moins}} de comportements de {{1|prévention}} de santé concernant l'{{2|alimentation}} ou la {{2|sédentarité}}, souvent par manque de {{1|connaissances}} concernant leurs bienfaits sur la santé.",
+    ]},
+    { h: "Interaction des mécanismes : le cercle vicieux", paras: [
+      "Ces mécanismes vont {{1|interagir}} entre eux : cet ensemble va jouer un rôle dans la survenue des inégalités sociales de santé. Les inégalités sociales de santé elles-mêmes vont {{1|influer}} sur les inégalités sociales, donnant lieu à un véritable {{1|cercle vicieux}} qui tend à {{1|renforcer}} les différences au fil du temps, d'où la volonté {{1|politique}} forte d'agir contre ces inégalités sociales de santé.",
+    ]},
+  ]
+},
+{
+  title: "Page 8 — D. Responsabilité sociale en santé : CHU et définition",
+  sections: [
+    { h: "D. Responsabilité sociale en santé", paras: [
+      "C'est l'idée qu'il faut répondre à tous ces enjeux en ayant en tête que, depuis notre place, on ne peut pas tout faire pour {{2|révolutionner le système}}. Mais on peut faire un certain nombre de choses dans notre pratique au {{1|quotidien}}, dans l'organisation de nos {{1|services}} : des {{1|outils}}, des {{1|dispositifs}} qui vont favoriser l'{{1|accès au soin}}, la {{1|non-discrimination}} et la possibilité pour les populations plus précaires d'avoir un même niveau de {{1|chance}} et d'{{1|égalité}} dans la santé et le soin.",
+      "{{3|Rudolf Virchow}} au {{3|19e}} siècle écrivait : « La médecine est une {{1|science sociale}}, et la politique n'est rien d'autre que la médecine à une {{1|large échelle}}. [...] Les médecins sont les {{1|avocats naturels des pauvres}}, et les problèmes sociaux se situent en grande partie sous leur {{2|juridiction}}. »",
+      "Selon le professeur, c'est exactement l'{{2|inverse}} de ce que l'on va entendre à l'hôpital (« c'est social, ce n'est pas médical, je ne suis pas assistante sociale »). Alors qu'en réalité : {{2|en partie, si}}.",
+      "Certaines personnes dans la {{2|précarité}} ou en {{2|dépression}}, qui ne parlent à personne, parlent parfois en premier à leur {{1|médecin généraliste}}. Si on n'est pas attentif et qu'on n'a pas en tête les enjeux de responsabilité sociale, on risque de {{2|passer à côté}}.",
+    ]},
+    { h: "Les CHU et la quatrième mission", paras: [
+      "Les {{1|CHU}} ont été créés avec {{3|3}} missions : {{1|soins}}, {{1|enseignement}}, {{1|recherche}}. {{3|3}} auteurs américains ({{3|Smitherman, Baker et Wilson}}) ont souligné une {{3|4e}} mission : la {{1|responsabilité sociale}}.",
+      "Figure « la quadruple mission des centres hospitalo-universitaires » : {{2|soins}}, {{2|enseignement}}, {{2|recherche}}, avec au centre la {{1|responsabilité sociale}}. Dans la manière de faire de l'enseignement, de la recherche, du soin, on peut avoir cette responsabilité, l'{{2|accepter}} et faire les choses en fonction de celle-ci.",
+      "Que doivent faire les CHU et les facultés de médecine socialement responsables ? Elles ont l'{{1|obligation}} d'orienter la {{1|formation}} qu'elles donnent, les {{1|recherches}} qu'elles poursuivent et les {{1|services}} qu'elles dispensent, vers les {{1|principaux problèmes de santé}} de la {{1|communauté}}, {{1|région}} et/ou {{1|nation}} qu'elles ont comme {{1|mandat de servir}} ({{3|Boelen & Heck, 1995}}).",
+    ]},
+    { h: "Détail de la définition de Boelen & Heck", paras: [
+      "« {{1|Principaux problèmes de santé}} » : il faut se demander quels sont les {{1|besoins de santé}} autour de moi. On ne fait pas de la santé de la même manière à {{2|Lyon}} qu'ailleurs : nous n'avons pas les mêmes {{2|populations}}, les mêmes niveaux {{2|socio-économiques}}, les mêmes problèmes de santé. La responsabilité sociale, c'est aussi se demander comment on peut apporter à tout le monde {{1|selon ses besoins}}.",
+      "« {{1|Mandat de servir}} » : à partir du moment où l'on est soignant, on a des {{1|obligations}}. C'est pour cela que les médecins ne peuvent pas {{2|refuser}} quelqu'un en consultation. On doit dépasser l'{{1|éthique du colloque singulier}}.",
+      "Des étudiants en médecine socialement responsables doivent : connaître les {{1|inégalités sociales de santé}} ; connaître et comprendre les {{1|dispositifs de soins dédiés aux populations précaires}} ; participer à des {{1|programmes favorisant les soins}} pour les populations précaires ; présenter des {{1|attitudes favorables}} aux personnes les plus précaires.",
+      "Derrière cette définition un peu large se cache la nécessité de la {{1|prise de conscience}} par les étudiants des inégalités sociales, des inégalités sociales de santé et des {{1|besoins de santé}} des populations. Il existe des formations, comme à Lyon Est une {{2|UELC}} ({{2|Unité d'Enseignement Librement Choisie}}) intitulée {{2|Responsabilité Sociale}}, pour sensibiliser les étudiants dès la {{3|deuxième}} année de médecine.",
+    ]},
+  ]
+},
+{
+  title: "Page 9 — Définition de 2021 et principes fondamentaux",
+  sections: [
+    { h: "Définition la plus actuelle (2021)", paras: [
+      "Définition la plus actuelle de la responsabilité sociale en santé, de {{3|2021}} : elle impose une approche {{1|complexe}} et {{1|globale}}. Elle implique une analyse des {{1|besoins}} et des {{1|déterminants de santé}} des patients et des populations, une stratégie {{1|cohérente}} pour y répondre et la {{1|mesure des impacts}} résultant des actions menées.",
+      "Elle nécessite une {{1|mobilisation effective des différents partenaires}} dans la variété des domaines associés à la santé : {{2|médical}}, {{2|socioculturel}}, {{2|économique}}, {{2|écologique}}, {{2|politique}}, {{2|éthique}} et {{2|droits humains}}.",
+      "Elle vise des actions {{1|transformatives}} susceptibles d'engager l'ensemble des {{1|professionnels de santé}} (pas que les médecins mais aussi les {{2|infirmiers}}, {{2|aides-soignants}}, etc.), {{2|individuellement}} et comme {{2|groupes}}, dans une {{1|communauté de valeurs}} et en {{1|cogestion avec les parties prenantes}}.",
+      "Cogestion avec les parties prenantes : les médecins font partie des {{3|5}} % des plus riches ; ils sont donc assez éloignés de leur patientèle, il faut donc {{1|en parler avec les personnes concernées}}.",
+      "La responsabilité sociale en santé implique donc un {{1|engagement collectif}} et des {{1|actions concrètes}} pour transformer la réalité à l'échelle d'une {{1|communauté de valeurs}}. L'objectif est de {{1|co-construire}} des solutions avec l'ensemble des {{1|parties prenantes}}, et non de décider {{1|seul}}.",
+    ]},
+    { h: "Deux principes fondamentaux", paras: [
+      "Deux principes fondamentaux au cœur de la responsabilité sociale en santé ({{3|Boelen et al., 2008}}) : l'{{1|altruisme}} : par l'intérêt prioritaire qui doit être porté au {{1|bien-être de la société}} ; l'{{1|altérité}} : au sens du souci d'{{1|intégration}} dans le {{1|contexte social}}.",
+    ]},
+    { h: "Ce qui se passe dans la société a un impact", paras: [
+      "Même si les études de santé et l'hôpital peuvent sembler à côté de la société, nous devons savoir ce qui se passe dans la société (exemple : le résultat des {{2|élections américaines}} va influencer la santé des Américains).",
+      "Ce qui se passe au niveau {{1|politique}} a un {{1|impact}}, même si ce n'est qu'aux USA : nous sommes dans un monde {{1|globalisé}} où ce qui se passe quelque part sur la planète va avoir un impact (exemple : {{2|pandémie}}).",
+    ]},
+  ]
+},
+{
+  title: "Page 10 — Les questions du professionnel et l'affiche de Vie de Carabin",
+  sections: [
+    { h: "Les questions que doivent se poser les professionnel(le)s de santé socialement responsables", paras: [
+      "Faire de la responsabilité sociale en santé, c'est se poser des questions. Quel est le {{1|projet de société}} que j'incarne dans ma manière de travailler ? L'{{1|accès aux soins}} est-il assuré ?",
+      "Est-ce que je participe à la {{1|reproduction des inégalités}} ou, au contraire, à la {{1|résolution des injustices}} ? Quels sont les impacts de mes actions, particulièrement sur le {{1|développement durable}} ?",
+      "Qui est affecté par les {{1|effets directs et indirects}} de mon action ? Quels sont les {{1|intérêts en jeu}} ? Qui peut m'aider dans ma volonté d'agir d'une manière plus {{1|responsable}}, {{1|équitable}} et {{1|soutenable}} ? Avec qui puis-je {{1|partager}} mes interrogations ?",
+    ]},
+    { h: "À propos de l'affiche « Vie de Carabin »", paras: [
+      "L'affiche (« derrière cette blouse, je n'ai pas de sexe, pas de religion… ») n'est {{1|pas vraie}} et peut en plus s'avérer {{1|dangereuse}}. On fait de la médecine en fonction de {{1|qui on est}} et il est important d'en avoir {{1|conscience}}. Cela va impacter notre manière de faire de la santé positivement ou même négativement, mais on ne peut pas {{1|totalement gommer}} qui on est.",
+      "Il faut plutôt se dire : qui suis-je ? Qu'est-ce que je peux {{1|améliorer}} pour que « qui je suis » ait un impact le plus {{1|bénéfique}} possible sur mes patients ? De plus, ce n'est pas parce que l'on porte une {{1|blouse blanche}} que l'on n'a pas de {{1|préjugés}}.",
+    ]},
+  ]
+},
+{
+  title: "Page 11 — Enseignement « Responsabilité sociale en santé » et plaidoyer",
+  sections: [
+    { h: "L'enseignement « Responsabilité sociale en santé » (Lyon Est)", paras: [
+      "Il a donc été créé l'enseignement responsabilité sociale en santé, qui s'étale de la {{3|2e}} à la {{3|6e}} année.",
+      "Enseignement (1/2) : durée d'{{3|un an}} ; enseignement {{1|expérientiel dans la communauté}} ; soutien pédagogique par les {{1|étudiants-tuteurs}} ; {{1|sensibilisation}} sur les inégalités sociales de santé et la responsabilité sociale ; développer l'{{1|empathie}} et le {{1|plaidoyer}} à l'égard des personnes les plus précaires.",
+      "Enseignement (2/2) : {{2|enseignements interactifs}} sur les déterminants sociaux de la santé et la responsabilité sociale ({{3|20}} heures) ; {{2|stage}} dans des associations dédiées aux personnes les plus précaires ({{3|40}} heures) ; {{2|projets collaboratifs}} dédiés au plaidoyer en responsabilité sociale ({{3|10 à 20}} heures). Plus de {{3|200}} étudiants en santé ont participé depuis {{3|2020}}.",
+      "Les {{1|projets collaboratifs}} ont été rajoutés car on s'est rendu compte qu'aller dans les stages était bien, mais que l'aspect de {{1|mise en forme}} de ce qui a été vu était aussi très important.",
+    ]},
+    { h: "Le plaidoyer", paras: [
+      "On parle de {{1|plaidoyer}} car, comme le rappelait {{3|Virchow}}, les professionnels de santé doivent être les {{1|avocats}} des personnes les plus précaires. Ces populations n'ont souvent ni les {{1|moyens politiques}} ni l'accès aux {{1|instances décisionnelles}} pour faire entendre leurs besoins en matière de santé.",
+      "Chaque année, des étudiants réalisent des {{2|livres}}, {{2|vidéos}}, {{2|bandes dessinées}} ou {{2|recueils}} pour sensibiliser leurs {{2|pairs}} et même les {{2|soignants}}. Ces projets permettent de {{1|diffuser la parole}}, de {{1|mobiliser les consciences}} et de mettre en avant la {{1|créativité}} : seul, on ne peut rien changer, mais {{1|collectivement}}, on peut faire évoluer les {{1|mentalités}} et les {{1|pratiques}}.",
+      "Conseil du professeur : le podcast « {{2|Entendre l'exil}} », réalisé par {{3|cinq}} étudiantes en médecine, sur les thématiques de la {{2|migration}} et de son impact sur la santé des individus.",
+    ]},
+  ]
+},
+{
+  title: "Page 12 — E. Humilité culturelle : micro-agressions et pratiques",
+  sections: [
+    { h: "E. Humilité culturelle", paras: [
+      "Devant la réalité {{1|migratoire}}, on a aujourd'hui des populations beaucoup plus diverses sur le plan {{2|culturel}}, {{2|ethnique}} et {{2|religieux}}. En tant que soignant, on doit être suffisamment {{1|outillé}} pour bien accueillir les défis et urgences de santé que cela pose.",
+      "Même en voulant bien faire, on peut avoir des attitudes que l'on ne maîtrise pas, que l'on peut qualifier de {{1|micro-agressions}}. Ces propos ne sont pas {{1|ouvertement discriminants}} mais peuvent être perçus de manière {{1|mauvaise}} alors que le soignant n'avait pas forcément {{1|cette intention}}. Exemple : « tu viens d'où ? ».",
+      "Métaphore des petites {{1|aiguilles}} qui, mises bout à bout, commencent à faire {{2|mal}} : plus on vit ces micro-agressions, plus elles ont un impact sur la {{1|santé mentale}}. Une étude montre qu'aux {{2|États-Unis}} les personnes {{2|afro-américaines}} ont plus de {{2|stress}}, d'{{2|anxiété}} ou de {{2|dépression}}.",
+    ]},
+    { h: "Qu'est-ce que je peux faire depuis ma place pour modifier les pratiques ?", paras: [
+      "Il faut avoir {{1|conscience de la diversité culturelle}} (ce qui nous {{2|relie}} et nous {{2|rassemble}}, et pas ce qui nous différencie) et avoir conscience des {{1|déséquilibres de pouvoir}}. Ils existent naturellement entre {{2|médecin}} et {{2|patient}} : il faut essayer de les {{2|limiter}}. Il existe aussi des enjeux de {{2|genre}} ({{2|endométriose}} découverte très tard), d'origine {{2|ethnique}}, {{2|culturelle}} ou {{2|religieuse}}, qui modifient l'accueil et le soin.",
+      "Il faut, pour les contrer, une {{1|ouverture d'esprit}} à l'autre et à la différence (exemple : les personnes {{2|transgenres}} de plus en plus présentes, notamment en psychiatrie : il faut être {{2|formé}} car, face à l'inconnu, l'être humain a plutôt tendance à {{2|rejeter}}).",
+      "Il faut ensuite une {{1|conscience de soi}} : Qui suis-je ? Quelle est mon histoire ? Comment impacte-t-elle ma manière de soigner ? Et être en {{2|adéquation}} avec celle-ci.",
+      "{{1|Altruisme}} : ne pas s'oublier, mais penser aux autres et à leur {{2|bien-être}} comme au nôtre.",
+      "{{1|Interaction soutenante}} : parfois on va faire {{2|plus}} que ce que l'on pense être en devoir de faire. Ce n'est pas parce que c'est un problème {{2|social}} qu'on ne peut rien faire.",
+      "{{1|Réflectivité et critique}} : objectif de toujours s'{{2|améliorer}} en tant que soignant, se remettre en {{2|question}} et accepter qu'on puisse être en {{2|difficulté}}.",
+    ]},
+  ]
+},
+{
+  title: "Page 13 — Objectifs de l'humilité culturelle et conclusion",
+  sections: [
+    { h: "Objectifs de l'humilité culturelle", paras: [
+      "Les objectifs de l'humilité culturelle sont : l'{{1|empowerment}} : comment on redonne le {{2|pouvoir d'agir}} aux personnes concernées (l'idée n'est pas de faire à leur place, on les {{2|accompagne}}) ; le {{1|respect mutuel}} ; le {{1|partenariat}} : trouver des solutions {{2|ensemble}} ; les {{1|soins optimaux}} : pas de médecine et de soins de santé à {{2|deux vitesses}} ; le {{1|développement professionnel continu}}.",
+      "Ce qu'on ne veut surtout pas : les {{2|préjugés}}, l'{{2|oppression}}, l'{{2|intolérance}}, la {{2|stigmatisation}}, la {{2|discrimination}}, l'{{2|exclusion}}, les {{2|stéréotypes}}, la {{2|méfiance}}, le {{2|jugement}} ou encore la {{2|mésentente}}.",
+    ]},
+    { h: "III. Conclusion", paras: [
+      "Les inégalités sociales de santé touchent à la fois la santé {{1|physique}} et {{1|mentale}} : c'est l'ensemble des {{2|dimensions}} de santé qui est touché par ces inégalités sociales.",
+      "Elles existent {{1|entre les pays}}, mais également entre les populations différentes {{1|au sein d'un même pays}}, entre les populations de différents niveaux {{1|socio-économiques}}.",
+      "Elles reposent sur des {{1|mécanismes complexes}} ({{2|comportements de santé}}, {{2|accès aux soins}}, {{2|facteurs de risque}}, {{2|déterminants sociaux de la santé}}, etc.) qui impactent les individus tout au long de leur vie (notion de {{1|trajectoire de vie}} centrale).",
+      "Les inégalités sociales impactent également la relation {{1|soignant-soigné}}, ce qui nécessite de {{1|former les étudiants en santé}} aux inégalités sociales de santé, car le {{1|manque de connaissance}} sur ces inégalités va altérer la relation tant du côté des {{2|soignants}} que des {{2|soignés}}.",
+      "Le professeur finit son cours en citant {{3|Martin Luther King}}.",
+    ]},
+  ]
+},
+];
+
 /* =========================================================================
    MULTI-COURS — registre des cours disponibles et cours actif
    ========================================================================= */
@@ -4801,6 +5682,16 @@ const COURSES = {
     facts: FACTS_ENVIRONNEMENT,
     fixedQuestions: FIXED_QUESTIONS_ENVIRONNEMENT,
     clozePages: CLOZE_PAGES_ENVIRONNEMENT,
+  },
+  responsabilite: {
+    id: "responsabilite",
+    label: "Responsabilité sociale",
+    shortLabel: "Responsabilité sociale",
+    mixedLabelPlain: "la responsabilité sociale en santé",
+    mixedLabelDe: "de la responsabilité sociale en santé",
+    facts: FACTS_RESPONSABILITE,
+    fixedQuestions: FIXED_QUESTIONS_RESPONSABILITE,
+    clozePages: CLOZE_PAGES_RESPONSABILITE,
   },
 };
 
